@@ -6,6 +6,7 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtPositioning 5.12
 import QtQuick.Layouts 1.12
+import QtQuick.Controls.Styles 1.4
 
 
 ApplicationWindow {
@@ -17,8 +18,14 @@ ApplicationWindow {
     visible: true
     title: qsTr("MeteoViz")
 
+    background: BorderImage {
+                source: "img/example.jpg"
+                //border { left: 20; top: 20; right: 20; bottom: 20 }
+            }
+
+
     RowLayout {
-        width: parent.width / 3
+        width: parent.width / 2
         height: parent.height / 20
         anchors {
             left: parent.left
@@ -29,12 +36,12 @@ ApplicationWindow {
 
 
         Text {
-            id: label
+            id: labelCityChoice
+            text: qsTr("Choose a city: ")
             font.pointSize: 10
             fontSizeMode: Text.Fit
-            Layout.preferredWidth: parent.width / 4
+            Layout.preferredWidth: parent.width * 0.28
             Layout.fillHeight: true
-            text: qsTr("Label")
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             minimumPixelSize: 12
@@ -42,12 +49,37 @@ ApplicationWindow {
 
         ComboBox {
             id: comboBoxCities
-            Layout.preferredWidth: parent.width * 0.75
+            model: ["None", "First", "Second", "Third"]
+            Layout.preferredWidth: parent.width * 0.5
             Layout.fillHeight: true
 
         }
+        Button{
+            id: buttonNext
+            text: qsTr("NEXT")
+
+            highlighted:comboBoxCities.currentText == "None" ? false : true
+            Layout.preferredWidth: parent.width * 0.12
+            Layout.fillHeight: true
+            anchors {
+                //left: par.left
+                leftMargin: parent.width * 0.1
+            }
+        }
     }
 
+
+
+    Image {
+        id: image
+
+        width: parent.width * 0.5
+        //height: parent.height * 0.5
+        source: "img/example.jpg"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 30
+    }
 }
 
 /*Button {
