@@ -1,8 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>citychoice.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>img/example.jpg</file>
         <file>img/trial.gif</file>
+        <file>weather.qml</file>
     </qresource>
 </RCC>
