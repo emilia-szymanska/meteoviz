@@ -25,7 +25,7 @@ ApplicationWindow {
             }
 
 
-    RowLayout {
+    Row/*Layout*/ {
         width: parent.width / 2
         height: parent.height / 20
         anchors {
@@ -37,22 +37,25 @@ ApplicationWindow {
 
 
         Text {
-            id: labelCityChoice
+            id: textCityChoice
             text: qsTr("Choose a city: ")
             font.pointSize: 10
             fontSizeMode: Text.Fit
-            Layout.preferredWidth: parent.width * 0.28
-            Layout.fillHeight: true
+            width: parent.width * 0.28
+            height: parent.height
+            //Layout.preferredWidth: parent.width * 0.28
+            //Layout.fillHeight: true
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
-            minimumPixelSize: 12
         }
 
         ComboBox {
             id: comboBoxCities
             model: ["None", "First", "Second", "Third"]
-            Layout.preferredWidth: parent.width * 0.5
-            Layout.fillHeight: true
+            width: parent.width * 0.5
+            height: parent.height
+            //Layout.preferredWidth: parent.width * 0.5
+            //Layout.fillHeight: true
 
         }
         Button{
@@ -61,10 +64,11 @@ ApplicationWindow {
 
             highlighted: comboBoxCities.currentText == "None" ? false : true
             enabled: highlighted == true ? true : false
-            Layout.preferredWidth: parent.width * 0.12
-            Layout.fillHeight: true
+            width: parent.width * 0.12
+            height: parent.height
+            //Layout.preferredWidth: parent.width * 0.12
+            //Layout.fillHeight: true
             anchors {
-                //left: par.left
                 leftMargin: parent.width * 0.1
             }
             onClicked: {
