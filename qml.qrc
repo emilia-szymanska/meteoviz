@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>img/example.jpg</file>
+        <file>img/trial.gif</file>
     </qresource>
 </RCC>
