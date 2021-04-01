@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.12
 
 ApplicationWindow {
     id: weatherWindow
+    objectName: "weatherWindow"
     width: 1200
     height: 800
     minimumWidth: 1200
@@ -208,9 +209,10 @@ ApplicationWindow {
                     highlighted: true
                     enabled: true
                     onClicked: {
-                        weatherWindow.close()
+                        appManager.changeWindow()
+                        //weatherWindow.close()
                         //weatherWindow.visible = false
-                        ld.source="citychoice.qml"
+                        //ld.source="citychoice.qml"
                     }
                 }
             }

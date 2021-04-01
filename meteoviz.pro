@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += \
         ButtonManager.cpp \
+        app_manager.cpp \
         main.cpp \
         url_connection.cpp
 
@@ -28,6 +29,7 @@ DISTFILES +=
 
 HEADERS += \
     ButtonManager.h \
+    app_manager.h \
     url_connection.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/lib/ -llibcurl.dll

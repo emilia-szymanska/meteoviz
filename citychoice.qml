@@ -73,8 +73,9 @@ ApplicationWindow {
                 leftMargin: parent.width * 0.1
             }
             onClicked: {
-                citychoiceWindow.close()
-                ld.source="weather.qml"
+                appManager.changeWindow()
+                //citychoiceWindow.close()
+                //ld.source="weather.qml"
             }
         }
     }
@@ -112,6 +113,7 @@ ApplicationWindow {
             objectName: "buttonTest"
             text: qsTr("MEH")
             onClicked: {
+                buttonTest.text = ":///"
                 clickedButton("xddd")
             }
         }

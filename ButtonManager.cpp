@@ -7,7 +7,7 @@ ButtonManager::ButtonManager(QObject *parent)
 
 }
 
-void ButtonManager::onButtonClicked(QString str)
+Q_INVOKABLE void ButtonManager::onButtonClicked(QString str)
 {
     qDebug() << "button: " << str;
     emit setTextField("COJEST");
