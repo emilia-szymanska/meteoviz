@@ -1,6 +1,6 @@
 #include "url_connection.h"
 
-url_connection::url_connection()
+UrlConnection::UrlConnection()
 {
-
+    int a = 3;
 }

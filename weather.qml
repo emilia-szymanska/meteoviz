@@ -208,7 +208,8 @@ ApplicationWindow {
                     highlighted: true
                     enabled: true
                     onClicked: {
-                        weatherWindow.visible = false
+                        weatherWindow.close()
+                        //weatherWindow.visible = false
                         ld.source="citychoice.qml"
                     }
                 }

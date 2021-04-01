@@ -1,4 +1,4 @@
-QT += quick
+QT += quick #curl jsoncpp
 
 CONFIG += c++11
 
@@ -7,6 +7,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        ButtonManager.cpp \
         main.cpp \
         url_connection.cpp
 
@@ -26,4 +27,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 HEADERS += \
+    ButtonManager.h \
     url_connection.h
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/lib/ -llibcurl.dll
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/lib/ -llibcurl.dll
+
+INCLUDEPATH += $$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/include
+DEPENDPATH += $$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/include

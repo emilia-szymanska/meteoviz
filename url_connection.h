@@ -4,13 +4,14 @@
 #include <iostream>
 #include <string>
 #include <curl/curl.h>
+//#include <jsoncpp/json/json.h>
 
 class UrlConnection
 {
-    string urlAddress;
+    std::string urlAddress;
     public:
         UrlConnection();
-        UrlConnection(string address);
+        UrlConnection(std::string address);
 };
 
 #endif // URL_CONNECTION_H
