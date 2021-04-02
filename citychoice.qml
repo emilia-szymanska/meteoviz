@@ -12,6 +12,7 @@ ApplicationWindow {
     objectName: "citychoiceWindow"
 
     signal clickedButton(string text)
+    signal chosenCity(string city)
     function setTextField(text){
         console.log("setTextField: " + text)
         textLabel.text = text
@@ -57,7 +58,11 @@ ApplicationWindow {
             model: ["None", "First", "Second", "Third"]
             width: parent.width * 0.5
             height: parent.height
-            onCurrentTextChanged: textLabel.text = currentText
+            onCurrentTextChanged:
+            {
+                chosenCity(currentText)
+                textLabel.text = currentText
+            }
         }
 
         Button{

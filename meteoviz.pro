@@ -1,4 +1,4 @@
-QT += quick #curl jsoncpp
+QT += quick widgets #curl jsoncpp
 
 CONFIG += c++11
 
@@ -37,3 +37,8 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Biblioteki/curl-7
 
 INCLUDEPATH += $$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/include
 DEPENDPATH += $$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/include
+
+win32: LIBS += -L$$PWD/../../Biblioteki/OpenSSL-Win64/lib/ -lopenssl
+
+INCLUDEPATH += $$PWD/../../Biblioteki/OpenSSL-Win64/include
+DEPENDPATH += $$PWD/../../Biblioteki/OpenSSL-Win64/include
