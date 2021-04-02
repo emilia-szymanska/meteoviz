@@ -1,10 +1,9 @@
 import QtQuick 2.12
 import QtQml 2.12
-//import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 //import QtPositioning 5.12
 import QtQuick.Layouts 1.12
-import QtQuick.Controls.Styles 1.4
+//import QtQuick.Controls.Styles 1.4
 //import QtLocation 5.12
 import QtQuick.Window 2.14
 import QtLocation 5.6
@@ -17,8 +16,16 @@ ApplicationWindow {
     signal clickedButton(string text)
     signal chosenCity(string city)
     function setTextField(text){
-
         textLabel.text = text
+    }
+
+    function addMarker(latitude, longitude){
+        //var Component = Qt.createComponent("marker.qml")
+        //var item = Component.createObject(citychoiceWindow, {
+        //           coordinate: QtPositioning.coordinate(latitude, longitude)})
+        //map.addMapItem(item)
+        marker2.coordinate = QtPositioning.coordinate(latitude, longitude)
+        marker2.visible = true
     }
 
     function setCitiesList(list){
@@ -101,37 +108,46 @@ ApplicationWindow {
     }
 
 
-    /*Image {
-        id: image
-
-        width: parent.width * 0.5
-        source: "img/example.jpg"
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 30
-    }*/
 
     Plugin {
             id: mapPlugin
-            name: "osm"// , "esri", ..."mapboxgl"
-            // specify plugin parameters if necessary
-            // PluginParameter {
-            //     name:
-            //     value:
-            // }
+            name: "osm" //"esri", "mapboxgl"
         }
 
         Map {
-            width: parent.width * 0.5
-            height: parent.height * 0.5
+            id: map
+            width: parent.width * 0.75
+            height: parent.height * 0.75
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 30
             plugin: mapPlugin
-            center: QtPositioning.coordinate(59.91, 10.75) // Oslo
-            zoomLevel: 14
+            center: QtPositioning.coordinate(51.9189046, 19.1343786) // Center Poland
+            zoomLevel: 6
+
+            Component.onCompleted: map.addMapItem(marker2) //addMarker(59.91, 10.75)
+
         }
 
+        MapQuickItem
+        {
+            id: marker2
+            objectName: "marker2"
+            anchorPoint.x: marker2.width / 2
+            anchorPoint.y: marker2.height / 2
+            coordinate: QtPositioning.coordinate(51.9189046, 19.1343786)
+            visible: false
+
+            sourceItem:
+                Image{
+                    Image{
+                        id: icon
+                        source: "img/example.jpg"
+                        sourceSize.width: 40
+                        sourceSize.height: 40
+                    }
+                }
+        }
 
     Text {
         id: textLabel

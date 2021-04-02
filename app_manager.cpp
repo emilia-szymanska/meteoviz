@@ -104,6 +104,8 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
     // connect C++ signals to QML slots
     QObject::connect(this->_citychoiceMngr, SIGNAL(setTextField(QVariant)),
                              this->_window, SLOT(setTextField(QVariant)));
+    QObject::connect(this->_citychoiceMngr, SIGNAL(sendPinPosition(QVariant, QVariant)),
+                             this->_window, SLOT(addMarker(QVariant, QVariant)));
 
     //QObject::connect(this->_citychoiceMngr, SIGNAL(setCitiesCombobox(QList<QVariant>)),
     //                         this->_window, SLOT(setCitiesList(QVariant)));

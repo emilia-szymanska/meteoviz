@@ -95,4 +95,6 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
     qDebug() << lat;
     qDebug() << lon;
     qDebug() << "==============";
+    emit sendPinPosition(lat, lon);
+
 }

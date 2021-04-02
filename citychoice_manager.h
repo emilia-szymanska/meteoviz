@@ -33,6 +33,7 @@ class CitychoiceManager : public QObject
     signals:
         void setTextField(QVariant text);
         void setCitiesCombobox(QList<QVariant> list);
+        void sendPinPosition(QVariant latitude, QVariant longitude);
 
     public slots:
         void onButtonClicked(QString str);
