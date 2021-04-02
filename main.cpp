@@ -14,9 +14,10 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);    
     QQmlApplicationEngine engine;
-    ButtonManager buttonManager;
+    CitychoiceManager citychoiceManager;
+    //ButtonManager buttonManager;
 
-    AppManager appManager(&engine, &buttonManager);
+    AppManager appManager(&engine, /*&buttonManager*/ &citychoiceManager);
     engine.rootContext()->setContextProperty("appManager", &appManager);
 
     return app.exec();

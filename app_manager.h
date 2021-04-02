@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
-#include "ButtonManager.h"
+//#include "ButtonManager.h"
+#include "citychoice_manager.h"
 
 
 class QQmlApplicationEngine;
@@ -14,12 +15,13 @@ class AppManager : public QObject
 
     private:
         QQmlApplicationEngine *_engine = nullptr;
-        ButtonManager *_btnMngr = nullptr;
+        //ButtonManager *_btnMngr = nullptr;
+        CitychoiceManager *_citychoiceMngr = nullptr;
         bool _main = true;
         QQuickWindow *_window  = nullptr;
 
     public:
-        explicit AppManager(QQmlApplicationEngine *engine, ButtonManager *btnMngr, QObject *parent = nullptr);
+        explicit AppManager(QQmlApplicationEngine *engine, /*ButtonManager *btnMngr,*/ CitychoiceManager *citychoiceMngr, QObject *parent = nullptr);
         Q_INVOKABLE void changeWindow();
         void initCitychoiceConnections(QObject *qObjectWindow);
 

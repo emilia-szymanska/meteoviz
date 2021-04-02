@@ -58,7 +58,6 @@ ApplicationWindow {
             width: parent.width * 0.5
             height: parent.height
             onCurrentTextChanged: textLabel.text = currentText
-            //onCurrentIndexChanged: textLabel.text = currentText
         }
 
         Button{
