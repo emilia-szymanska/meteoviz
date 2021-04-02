@@ -1,48 +1,54 @@
 #include "app_manager.h"
-#include <QQmlApplicationEngine>
-#include <QQuickWindow>
-
 
 
 AppManager::AppManager(QQmlApplicationEngine *engine, ButtonManager *btnMngr, QObject *parent) : QObject(parent)
 {
     _engine = engine;
     _btnMngr = btnMngr;
+    _engine->load(QUrl(QStringLiteral("qrc:/citychoice.qml")));
+    Q_ASSERT( !_engine->rootObjects().isEmpty() );
 
+    QObject *topQObjectWindow = _engine->rootObjects().value(0);
+    this->initCitychoiceConnections(topQObjectWindow);
 }
+
 
 void AppManager::changeWindow()
 {
-    QObject *qObject = _engine->rootObjects().first();
-    Q_ASSERT( qObject != NULL );
+    QObject *qObjectCurrentWindow = _engine->rootObjects().value(0);
+    Q_ASSERT( qObjectCurrentWindow != NULL );
 
-    QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qObject);
+    QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qObjectCurrentWindow);
     Q_ASSERT( mainWindow );
 
     _main = !_main;
     if (_main)
     {
         _engine->load(QUrl(QStringLiteral("qrc:/citychoice.qml")));
-        QObject *topLevel = _engine->rootObjects().value(1);
-        QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
-        qDebug() << window;
-
-        // connect our QML signal to our C++ slot
-        QObject::connect(window, SIGNAL(clickedButton(QString)),
-                                 _btnMngr, SLOT(onButtonClicked(QString)));
-
-        // connect our C++ signal to our QML slot
-        QObject::connect(_btnMngr, SIGNAL(setTextField(QVariant)),
-                                 window, SLOT(setTextField(QVariant)));
+        QObject *qObjectWindow = _engine->rootObjects().value(1);
+        this->initCitychoiceConnections(qObjectWindow);
 
     } else
     {
         _engine->load(QUrl(QStringLiteral("qrc:/weather.qml")));
+        //_btnMngr = nullptr;
     }
 
     mainWindow->close();
-
-    qObject->deleteLater();
+    qObjectCurrentWindow->deleteLater();
 }
 
+
+void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
+{
+    this->_window = qobject_cast<QQuickWindow *>(qObjectWindow);
+
+    // connect our QML signal to our C++ slot
+    QObject::connect(this->_window, SIGNAL(clickedButton(QString)),
+                             this->_btnMngr, SLOT(onButtonClicked(QString)));
+
+    // connect our C++ signal to our QML slot
+    QObject::connect(this->_btnMngr, SIGNAL(setTextField(QVariant)),
+                             this->_window, SLOT(setTextField(QVariant)));
+}
 

@@ -48,8 +48,6 @@ ApplicationWindow {
             fontSizeMode: Text.Fit
             width: parent.width * 0.28
             height: parent.height
-            //Layout.preferredWidth: parent.width * 0.28
-            //Layout.fillHeight: true
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }
@@ -59,6 +57,8 @@ ApplicationWindow {
             model: ["None", "First", "Second", "Third"]
             width: parent.width * 0.5
             height: parent.height
+            onCurrentTextChanged: textLabel.text = currentText
+            //onCurrentIndexChanged: textLabel.text = currentText
         }
 
         Button{
