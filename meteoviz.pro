@@ -1,4 +1,4 @@
-QT += quick widgets #curl jsoncpp
+QT += quick widgets location#curl jsoncpp
 
 CONFIG += c++11
 

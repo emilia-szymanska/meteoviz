@@ -5,6 +5,7 @@
 
 #include "app_manager.h"
 
+
 int main(int argc, char *argv[])
 {
 
@@ -19,6 +20,12 @@ int main(int argc, char *argv[])
 
     AppManager appManager(&engine, /*&buttonManager*/ &citychoiceManager);
     engine.rootContext()->setContextProperty("appManager", &appManager);
+
+
+    //const QString addres = "1600 Amphitheatre Parkway, Mountain View, CA";
+    //QGeoCodingManager x;
+    //x.geocode(addres);
+
 
     return app.exec();
 }

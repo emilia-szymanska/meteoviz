@@ -14,9 +14,17 @@ ApplicationWindow {
     signal clickedButton(string text)
     signal chosenCity(string city)
     function setTextField(text){
-        console.log("setTextField: " + text)
+
         textLabel.text = text
     }
+
+    function setCitiesList(list){
+        for (var i=0; i<list.length; i++)
+                    console.log("Array item:", list[i])
+        //comboBoxCities.model = list
+    }
+
+
 
     width: 1200
     height: 800
@@ -55,7 +63,7 @@ ApplicationWindow {
 
         ComboBox {
             id: comboBoxCities
-            model: ["None", "First", "Second", "Third"]
+            model: ["None", "Wroclaw", "Olsztyn", "Gdansk"]
             width: parent.width * 0.5
             height: parent.height
             onCurrentTextChanged:

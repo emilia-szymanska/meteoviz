@@ -2,6 +2,14 @@
 ///////////////////////////
 #include <QtNetwork>
 #include <QMessageBox>
+#include <QGeoCodingManager>
+#include <QApplication>
+#include <QGeoAddress>
+#include <QGeoCoordinate>
+#include <QGeoLocation>
+#include <QGeoServiceProvider>
+#include <QtDebug>
+#include <iostream>
 ///
 
 AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, /*ButtonManager *btnMngr,*/ QObject *parent) : QObject(parent)
@@ -34,19 +42,24 @@ void AppManager::changeWindow()
     } else
     {
         _engine->load(QUrl(QStringLiteral("qrc:/weather.qml")));
+
+
+
+
+
         ///////////////////
-        QFile file("D:/qt_projects/meteoviz/apikey.txt");
+        /*QFile file("D:/qt_projects/meteoviz/apikey.txt");
         if(!file.open(QIODevice::ReadOnly)) {
             QMessageBox::information(0, "error", file.errorString());
         }
 
         QTextStream in(&file);
         QString apikey = in.readLine();
-        /*while(!in.atEnd()) {
-            QString line = in.readLine();
+        //while(!in.atEnd()) {
+        //    QString line = in.readLine();
             //QStringList fields = line.split(",");
             //model->appendRow(fields);
-        }*/
+        //}
 
         file.close();
 
@@ -69,43 +82,10 @@ void AppManager::changeWindow()
         qDebug() << x;
         QJsonObject ar1 = x.at(0).toObject();
         qDebug() << "===================";
-        qDebug() << "" << ar1["endTime"].toString();
-        /*QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+        qDebug() << "" << ar1["endTime"].toString();*/
 
-        manager->get(QNetworkRequest(QUrl("https://data.climacell.co/v4/timelines?location=-73.98529171943665,40.75872069597532&fields=temperature&timesteps=1h&units=metric&apikey=KzMgATyAMAz1lsuzz6d8gLDPQBca3ggZ")));
-        QNetworkRequest request;
-        request.setUrl(QUrl("http://qt-project.org"));
-        //request.setRawHeader("User-Agent", "MyOwnBrowser 1.0");
-
-        QNetworkReply *reply = manager->get(request);
-
-        connect(reply, &QNetworkReply::finished, [=]() {
-
-            if(reply->error() == QNetworkReply::NoError)
-            {
-                QByteArray response = reply->readAll();
-                qDebug() << response;
-                // do something with the data...
-            }
-        });*/
-        /*QNetworkRequest request(QUrl("https://data.climacell.co/"));
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "v4/timelines?location=-73.98529171943665,40.75872069597532&fields=temperature&timesteps=1h&units=metric&apikey=KzMgATyAMAz1lsuzz6d8gLDPQBca3ggZ");
-        QJsonObject json;
-        QNetworkAccessManager nam;
-        QNetworkReply *reply = nam.post(request, QJsonDocument(json).toJson());
-        while (!reply->isFinished())
-        {
-            qApp->processEvents();
-        }
-        QByteArray response_data = reply->readAll();
-        QJsonDocument json2 = QJsonDocument::fromJson(response_data);
-        qDebug() << json;
-        qDebug() << json2;
-        reply->deleteLater();*/
-        ///////////////////
 
     }
-
     mainWindow->close();
     qObjectCurrentWindow->deleteLater();
 }
@@ -115,14 +95,43 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
 {
     this->_window = qobject_cast<QQuickWindow *>(qObjectWindow);
 
-    // connect our QML signal to our C++ slot
+    // connect QML signals to C++ slots
     QObject::connect(this->_window, SIGNAL(clickedButton(QString)),
                              this->_citychoiceMngr, SLOT(onButtonClicked(QString)));
     QObject::connect(this->_window, SIGNAL(chosenCity(QString)),
                              this->_citychoiceMngr, SLOT(onCityChosen(QString)));
 
-    // connect our C++ signal to our QML slot
+    // connect C++ signals to QML slots
     QObject::connect(this->_citychoiceMngr, SIGNAL(setTextField(QVariant)),
                              this->_window, SLOT(setTextField(QVariant)));
+
+    //QObject::connect(this->_citychoiceMngr, SIGNAL(setCitiesCombobox(QList<QVariant>)),
+    //                         this->_window, SLOT(setCitiesList(QVariant)));
+    /////////////////////////////////////////////////
+   /* QGeoServiceProvider qGeoService("osm");
+    QGeoCodingManager *pQGeoCoder = qGeoService.geocodingManager();
+    QGeoAddress qGeoAddr;
+    qGeoAddr.setCountry(QString::fromUtf8("Poland"));
+    qGeoAddr.setPostalCode(QString::fromUtf8("10-818"));
+    qGeoAddr.setCity(QString::fromUtf8("Olsztyn"));
+    qGeoAddr.setStreet(QString::fromUtf8("Klosowa 137"));
+    QGeoCodeReply *pQGeoCode = pQGeoCoder->geocode(qGeoAddr);
+        if (!pQGeoCode) {
+          std::cerr << "GeoCoding totally failed!" << std::endl;
+
+        }
+    QEventLoop event;
+    connect(pQGeoCode,SIGNAL(finished()), &event, SLOT(quit()));
+    event.exec();
+    QList<QGeoLocation> qGeoLocs = pQGeoCode->locations();
+    std::cout << qGeoLocs.size() << " location(s) returned." << std::endl;
+    for (QGeoLocation &qGeoLoc : qGeoLocs) {
+                     qGeoLoc.setAddress(qGeoAddr);
+                     QGeoCoordinate qGeoCoord = qGeoLoc.coordinate();
+                     std::cout
+                       << "Lat.:  " << qGeoCoord.latitude() << std::endl
+                       << "Long.: " << qGeoCoord.longitude() << std::endl
+                       << "Alt.:  " << qGeoCoord.altitude() << std::endl;
+                   }*/
 }
 
