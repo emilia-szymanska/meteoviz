@@ -1,11 +1,14 @@
 import QtQuick 2.12
 import QtQml 2.12
-import QtQuick.Window 2.12
+//import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
-import QtPositioning 5.12
+//import QtPositioning 5.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls.Styles 1.4
-
+//import QtLocation 5.12
+import QtQuick.Window 2.14
+import QtLocation 5.6
+import QtPositioning 5.6
 
 ApplicationWindow {
     id: citychoiceWindow
@@ -63,7 +66,7 @@ ApplicationWindow {
 
         ComboBox {
             id: comboBoxCities
-            model: ["None", "Wroclaw", "Olsztyn", "Gdansk"]
+            model: ["None", "Gdansk", "Olsztyn", "Wroclaw"]
             width: parent.width * 0.5
             height: parent.height
             onCurrentTextChanged:
@@ -98,7 +101,7 @@ ApplicationWindow {
     }
 
 
-    Image {
+    /*Image {
         id: image
 
         width: parent.width * 0.5
@@ -106,7 +109,28 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 30
-    }
+    }*/
+
+    Plugin {
+            id: mapPlugin
+            name: "osm"// , "esri", ..."mapboxgl"
+            // specify plugin parameters if necessary
+            // PluginParameter {
+            //     name:
+            //     value:
+            // }
+        }
+
+        Map {
+            width: parent.width * 0.5
+            height: parent.height * 0.5
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 30
+            plugin: mapPlugin
+            center: QtPositioning.coordinate(59.91, 10.75) // Oslo
+            zoomLevel: 14
+        }
 
 
     Text {
