@@ -1,4 +1,4 @@
-QT += quick widgets location#curl jsoncpp
+QT += quick widgets location
 
 CONFIG += c++11
 
@@ -10,7 +10,8 @@ SOURCES += \
         app_manager.cpp \
         citychoice_manager.cpp \
         main.cpp \
-        url_connection.cpp
+        url_connection.cpp \
+        weather_manager.cpp
 
 RESOURCES += qml.qrc
 
@@ -28,9 +29,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 HEADERS += \
+    additional_structs.h \
     app_manager.h \
     citychoice_manager.h \
-    url_connection.h
+    url_connection.h \
+    weather_manager.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/lib/ -llibcurl.dll
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../Biblioteki/curl-7.75.0-win64-mingw/lib/ -llibcurl.dll

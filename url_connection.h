@@ -24,6 +24,7 @@ class UrlConnection
         UrlConnection();
         UrlConnection(QString address);
         void callGeneralWeather(QMap<QString, CityData> & generalWeatherMap);
+        void callDailyWeather(QString city, QMap<QString, DailyForecast> & fourDayForecast);
         int readWeathercode(QString content);
 };
 

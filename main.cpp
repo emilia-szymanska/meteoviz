@@ -5,6 +5,7 @@
 
 #include "app_manager.h"
 
+
 int main(int argc, char *argv[])
 {
 
@@ -15,8 +16,9 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);    
     QQmlApplicationEngine engine;
     CitychoiceManager citychoiceManager;
+    WeatherManager weatherManager;
 
-    AppManager appManager(&engine, &citychoiceManager);
+    AppManager appManager(&engine, &citychoiceManager, &weatherManager);
     engine.rootContext()->setContextProperty("appManager", &appManager);
 
     return app.exec();

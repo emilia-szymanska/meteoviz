@@ -12,17 +12,19 @@
 #include <iostream>
 ///
 
-AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, QObject *parent) : QObject(parent)
+AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, WeatherManager *weatherMngr, QObject *parent) : QObject(parent)
 {
     _engine = engine;
     _citychoiceMngr = citychoiceMngr;
+    _weatherMngr = weatherMngr;
+
     _engine->load(QUrl(QStringLiteral("qrc:/citychoice.qml")));
     Q_ASSERT( !_engine->rootObjects().isEmpty() );
 
     QObject *topQObjectWindow = _engine->rootObjects().value(0);
     this->initCitychoiceConnections(topQObjectWindow);
     this->_citychoiceMngr->initCitiesCombobox();
-    //this->_citychoiceMngr->initGeneralCities(QString fileName);
+    this->_citychoiceMngr->initMapItems();
 
 }
 
@@ -41,9 +43,11 @@ void AppManager::changeWindow()
         QObject *qObjectWindow = _engine->rootObjects().value(1);
         this->initCitychoiceConnections(qObjectWindow);
         this->_citychoiceMngr->initCitiesCombobox();
+        this->_citychoiceMngr->initMapItems();
     }
     else{
         _engine->load(QUrl(QStringLiteral("qrc:/weather.qml")));
+        this->_weatherMngr->setCity(this->_citychoiceMngr->selectedCity());
     }
 
     mainWindow->close();
@@ -56,20 +60,18 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
     this->_window = qobject_cast<QQuickWindow *>(qObjectWindow);
 
     // connect QML signals to C++ slots
-    //QObject::connect(this->_window, SIGNAL(clickedButton(QString)),
-    //                         this->_citychoiceMngr, SLOT(onButtonClicked(QString)));
     QObject::connect(this->_window, SIGNAL(chosenCity(QString)),
                              this->_citychoiceMngr, SLOT(onCityChosen(QString)));
 
     // connect C++ signals to QML slots
-    //QObject::connect(this->_citychoiceMngr, SIGNAL(setTextField(QVariant)),
-    //                         this->_window, SLOT(setTextField(QVariant)));
     QObject::connect(this->_citychoiceMngr, SIGNAL(sendPinPosition(QVariant,QVariant)),
                              this->_window, SLOT(addMarker(QVariant,QVariant)));
 
     QObject::connect(this->_citychoiceMngr, SIGNAL(setCitiesCombobox(QVariant)),
                             this->_window, SLOT(setCitiesList(QVariant)));
 
+    QObject::connect(this->_citychoiceMngr, SIGNAL(setMapItems(QVariant)),
+                            this->_window, SLOT(setMapItems(QVariant)));
 
 }
 

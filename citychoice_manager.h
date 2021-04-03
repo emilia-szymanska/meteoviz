@@ -35,6 +35,7 @@ class CitychoiceManager : public QObject
         void initGeneralCities(QString fileName);
         void initCitiesCombobox();
         void initMapItems();
+        std::pair<QString, CityDataGeo> selectedCity();
 
     signals:
         void setCitiesCombobox(QVariant list);

@@ -83,6 +83,13 @@ void CitychoiceManager::initMapItems()
     emit setMapItems(list);
 }
 
+
+std::pair<QString, CityDataGeo> CitychoiceManager::selectedCity()
+{
+    return std::pair<QString, CityDataGeo>(_cityName, _cities[_cityName]);
+}
+
+
 Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
 {
     this->_cityName = city;
@@ -136,3 +143,4 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
     emit sendPinPosition(lat, lon);
 
 }
+
