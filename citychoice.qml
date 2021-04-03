@@ -43,7 +43,7 @@ ApplicationWindow {
 
                }
 
-                Component.icon2.source = "img/firework.gif"
+                //item.icon2.source = "img/firework.gif"
                 map.addMapItem(item)
             }
         }
@@ -116,13 +116,6 @@ ApplicationWindow {
         }
     }
 
-   /* Loader{
-        id:ld;
-        anchors.fill: parent;
-    }*/
-
-
-
     Plugin {
             id: mapPlugin
             name: "osm" //"esri", "mapboxgl"
@@ -147,8 +140,8 @@ ApplicationWindow {
         {
             id: marker2
             objectName: "marker2"
-            anchorPoint.x: marker2.width / 2
-            anchorPoint.y: marker2.height / 2
+            anchorPoint.x: 20 //marker2.width / 2
+            anchorPoint.y: 20 //marker2.height / 2
             coordinate: QtPositioning.coordinate(51.9189046, 19.1343786)
             visible: false
 

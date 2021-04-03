@@ -8,8 +8,8 @@ import QtPositioning 5.6
 MapQuickItem
 {
     id: marker
-    anchorPoint.x: marker.width / 4
-    anchorPoint.y: marker.height
+    anchorPoint.x: 20
+    anchorPoint.y: 20 //marker.height
     sourceItem:
         Image{
             AnimatedImage{
