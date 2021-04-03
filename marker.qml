@@ -13,7 +13,7 @@ MapQuickItem
     sourceItem:
         Image{
             AnimatedImage{
-                id: icon
+                id: icon2
                 source: "img/trial.gif"
                 width: 40
                 height: 40

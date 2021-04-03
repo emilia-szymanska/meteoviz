@@ -31,19 +31,22 @@ ApplicationWindow {
 
     function setMapItems(list){
         console.log(list)
-        var elements = [0.0, 0.0, 0]
+        var elements = [0.0, 0.0, 0] // lat, lon, code
 
         for(var i in list){
             elements[i%3] = list[i]
+
             if (i%3 == 2){
-                console.log(elements)
                 var Component = Qt.createComponent("marker.qml")
                 var item = Component.createObject(citychoiceWindow, {
                            coordinate: QtPositioning.coordinate(elements[0], elements[1])})
+
+               }
+
+                Component.icon2.source = "img/firework.gif"
                 map.addMapItem(item)
             }
         }
-    }
 
 
 
