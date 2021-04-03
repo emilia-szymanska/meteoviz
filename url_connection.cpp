@@ -6,10 +6,10 @@ UrlConnection::UrlConnection()
 
 UrlConnection::UrlConnection(QString address)
 {
-    _urlAddress = address; // https://data.climacell.co/
+    _urlAddress = address;
 }
 
-void UrlConnection::callGeneralWeather(QJsonObject generalWeatherList)
+void UrlConnection::callGeneralWeather(QMap<QString, CityData> & generalWeatherMap)
 {
 
     ////// APIKEY ///////////
@@ -21,53 +21,48 @@ void UrlConnection::callGeneralWeather(QJsonObject generalWeatherList)
     QString apikey = in.readLine();
     file.close();
 
-    /////// TIME ///////////
-    /*QDateTime currentDate = QDateTime::currentDateTime();
-    QString formatDay = "yyyy-MM-dd";
-    QString formatTime = "hh:mm:ss";
-    QString day = currentDate.toString(formatDay);
-    QString time = currentDate.toString(formatTime);
-    //2021-03-28T15:00:00Z
-*/
-    //QJsonObject json = doc.object();
-
-
     QNetworkAccessManager manager;
 
-    foreach(const QString& key, generalWeatherList.keys()) {
-        QJsonObject cityData = generalWeatherList.value(key).toObject();
-        QString location = cityData["coords"].toString();
-        QString url = this->_urlAddress + "v4/timelines?location=" + location + "&fields=weatherCode&timesteps=current&units=metric&apikey=" + apikey;
+    foreach(const QString& key, generalWeatherMap.keys()) {
+        qDebug() << "===================";
+        qDebug() << key;
+        //QJsonObject cityData = generalWeatherMap.value(key).toObject();
+        //QString lat = QString::number(cityData["latitude"].toDouble());
+        //QString lon = QString::number(cityData["longitude"].toDouble());
+        CityData cityData = generalWeatherMap.value(key);
+        QString lat = QString::number(cityData.latitude);
+        QString lon = QString::number(cityData.longitude);
+        qDebug() << lat;
+        qDebug() << lon;
+
+        /*QString url = this->_urlAddress + "v4/timelines?location=" + lat + "," + lon +
+                "&fields=weatherCode&timesteps=current&units=metric&apikey=" + apikey;
         QNetworkReply *response = manager.get(QNetworkRequest(QUrl(url)));
+
         QEventLoop event;
         QObject::connect(response, SIGNAL(finished()), &event, SLOT(quit()));
         event.exec();
+
         QString content = response->readAll();
-        QJsonDocument doc = QJsonDocument::fromJson(content.toUtf8());
-        QJsonObject jsonObject = doc.object();
-        QJsonObject data = jsonObject["data"].toObject();
-        qDebug() << "===================";
-        qDebug() << data;
-        QJsonArray timelines = data["timelines"].toArray();
-        qDebug() << timelines;
-        QJsonObject firstEl = timelines.at(0).toObject();
-        qDebug() << firstEl;
-        QJsonArray intervals = firstEl["intervals"].toArray();
-        qDebug() << intervals;
-        QJsonObject firstInterval = intervals.at(0).toObject();
-        qDebug() << firstInterval;
-        QJsonObject values = firstInterval["values"].toObject();
-        qDebug() << values;
-        int weatherCode = values["weatherCode"].toInt();
-        qDebug() << weatherCode;
-        qDebug() << "===================";
-        cityData.insert("weather_code", weatherCode);
+        int weatherCode = this->readWeathercode(content);
+        generalWeatherMap[key].weatherCode = weatherCode;*/
     }
 
+}
 
 
-
-
-
-
+int UrlConnection::readWeathercode(QString content)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(content.toUtf8());
+    QJsonObject jsonObject = doc.object();
+    QJsonObject data = jsonObject["data"].toObject();
+    QJsonArray timelines = data["timelines"].toArray();
+    QJsonObject firstEl = timelines.at(0).toObject();
+    QJsonArray intervals = firstEl["intervals"].toArray();
+    QJsonObject firstInterval = intervals.at(0).toObject();
+    QJsonObject values = firstInterval["values"].toObject();
+    int weatherCode = values["weatherCode"].toInt();
+    //qDebug() << weatherCode;
+    //qDebug() << "===================";
+    return weatherCode;
 }

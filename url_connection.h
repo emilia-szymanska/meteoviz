@@ -14,6 +14,8 @@
 #include <iostream>
 #include <QDateTime>
 
+#include "additional_structs.h"
+
 class UrlConnection
 {
     QString _urlAddress = "";
@@ -21,7 +23,8 @@ class UrlConnection
     public:
         UrlConnection();
         UrlConnection(QString address);
-        void callGeneralWeather(QJsonObject generalWeatherList);
+        void callGeneralWeather(QMap<QString, CityData> & generalWeatherMap);
+        int readWeathercode(QString content);
 };
 
 #endif // URL_CONNECTION_H

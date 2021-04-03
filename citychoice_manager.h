@@ -16,6 +16,8 @@
 #include <QGeoServiceProvider>
 #include <QtDebug>
 #include <iostream>
+#include <QMap>
+#include "url_connection.h"
 
 class CitychoiceManager : public QObject
 {
@@ -24,20 +26,25 @@ class CitychoiceManager : public QObject
     private:
         QString _cityName = "";
         QList <QVariant> _availableCities;
-        QJsonObject _citiesJson;
+        QMap<QString, CityDataGeo> _cities;
+        //QJsonObject _citiesJson;
+        //////////////////////////
+        //QJsonObject _generalCitiesJson;
+        QMap <QString, CityData> _generalCities;
 
     public:
         explicit CitychoiceManager(QObject *parent = nullptr);
         void initCities(QString fileName);
+        void initGeneralCities(QString fileName);
         void initCitiesCombobox();
 
     signals:
-        void setTextField(QVariant text);
-        void setCitiesCombobox(/*QList<QVariant> list*/ QVariant list);
+        //void setTextField(QVariant text);
+        void setCitiesCombobox(QVariant list);
         void sendPinPosition(QVariant latitude, QVariant longitude);
 
     public slots:
-        void onButtonClicked(QString str);
+        //void onButtonClicked(QString str);
         void onCityChosen(QString city);
 };
 
