@@ -19,6 +19,18 @@ struct CityDataGeo
     QString geostring = "";
 };
 
+
+struct DailyForecast
+{
+    int temperature = 0;
+    int pressure = 0;
+    int windSpeed = 0;
+    QString windDirection = "";
+    int precipitation = 0;
+    int humidity = 0;
+
+};
+
 /*std::ostream& operator << (std::ostream &strm, const GeneralCityData &data)
 {
   strm << data.latitude << " " << data.longitude << " " << data.weatherCode << "\n";
