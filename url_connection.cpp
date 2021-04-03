@@ -26,9 +26,6 @@ void UrlConnection::callGeneralWeather(QMap<QString, CityData> & generalWeatherM
     foreach(const QString& key, generalWeatherMap.keys()) {
         qDebug() << "===================";
         qDebug() << key;
-        //QJsonObject cityData = generalWeatherMap.value(key).toObject();
-        //QString lat = QString::number(cityData["latitude"].toDouble());
-        //QString lon = QString::number(cityData["longitude"].toDouble());
         CityData cityData = generalWeatherMap.value(key);
         QString lat = QString::number(cityData.latitude);
         QString lon = QString::number(cityData.longitude);
@@ -62,7 +59,7 @@ int UrlConnection::readWeathercode(QString content)
     QJsonObject firstInterval = intervals.at(0).toObject();
     QJsonObject values = firstInterval["values"].toObject();
     int weatherCode = values["weatherCode"].toInt();
-    //qDebug() << weatherCode;
-    //qDebug() << "===================";
+    qDebug() << weatherCode;
+    qDebug() << "===================";
     return weatherCode;
 }

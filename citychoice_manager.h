@@ -26,10 +26,7 @@ class CitychoiceManager : public QObject
     private:
         QString _cityName = "";
         QList <QVariant> _availableCities;
-        QMap<QString, CityDataGeo> _cities;
-        //QJsonObject _citiesJson;
-        //////////////////////////
-        //QJsonObject _generalCitiesJson;
+        QMap <QString, CityDataGeo> _cities;
         QMap <QString, CityData> _generalCities;
 
     public:
@@ -39,12 +36,10 @@ class CitychoiceManager : public QObject
         void initCitiesCombobox();
 
     signals:
-        //void setTextField(QVariant text);
         void setCitiesCombobox(QVariant list);
         void sendPinPosition(QVariant latitude, QVariant longitude);
 
     public slots:
-        //void onButtonClicked(QString str);
         void onCityChosen(QString city);
 };
 

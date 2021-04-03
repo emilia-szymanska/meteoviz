@@ -15,13 +15,12 @@ class AppManager : public QObject
 
     private:
         QQmlApplicationEngine *_engine = nullptr;
-        //ButtonManager *_btnMngr = nullptr;
         CitychoiceManager *_citychoiceMngr = nullptr;
         bool _main = true;
         QQuickWindow *_window  = nullptr;
 
     public:
-        explicit AppManager(QQmlApplicationEngine *engine, /*ButtonManager *btnMngr,*/ CitychoiceManager *citychoiceMngr, QObject *parent = nullptr);
+        explicit AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, QObject *parent = nullptr);
         Q_INVOKABLE void changeWindow();
         void initCitychoiceConnections(QObject *qObjectWindow);
 

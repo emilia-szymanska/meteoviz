@@ -88,7 +88,6 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
     if (_cityName != "None")
     {
         CityDataGeo cityData = _cities[_cityName];
-        //QJsonObject cityData = _citiesJson[_cityName].toObject();
         if( cityData.latitude < 190.0)
         {
             lat = cityData.latitude;
@@ -125,10 +124,6 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
             lon = qGeoCoord.longitude();
             lat = qGeoCoord.latitude();
 
-            //QJsonObject coordsObject;
-            //coordsObject.insert("latitude", lat);
-            //coordsObject.insert("longitude", lon);
-            //_citiesJson.insert(_cityName, coordsObject);
             _cities[_cityName].latitude = lat;
             _cities[_cityName].longitude = lon;
 
