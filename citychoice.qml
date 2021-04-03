@@ -1,10 +1,7 @@
 import QtQuick 2.12
 import QtQml 2.12
 import QtQuick.Controls 2.12
-//import QtPositioning 5.12
 import QtQuick.Layouts 1.12
-//import QtQuick.Controls.Styles 1.4
-//import QtLocation 5.12
 import QtQuick.Window 2.14
 import QtLocation 5.6
 import QtPositioning 5.6
@@ -13,7 +10,7 @@ ApplicationWindow {
     id: citychoiceWindow
     objectName: "citychoiceWindow"
 
-    signal clickedButton(string text)
+    //signal clickedButton(string text)
     signal chosenCity(string city)
     function setTextField(text){
         textLabel.text = text
@@ -29,9 +26,23 @@ ApplicationWindow {
     }
 
     function setCitiesList(list){
-        //for (var i=0; i<list.length; i++)
-        //            console.log("Array item:", list[i])
         comboBoxCities.model = list
+    }
+
+    function setMapItems(list){
+        console.log(list)
+        var elements = [0.0, 0.0, 0]
+
+        for(var i in list){
+            elements[i%3] = list[i]
+            if (i%3 == 2){
+                console.log(elements)
+                var Component = Qt.createComponent("marker.qml")
+                var item = Component.createObject(citychoiceWindow, {
+                           coordinate: QtPositioning.coordinate(elements[0], elements[1])})
+                map.addMapItem(item)
+            }
+        }
     }
 
 
@@ -79,7 +90,7 @@ ApplicationWindow {
             onCurrentTextChanged:
             {
                 chosenCity(currentText)
-                textLabel.text = currentText
+               // textLabel.text = currentText
             }
         }
 
@@ -102,10 +113,10 @@ ApplicationWindow {
         }
     }
 
-    Loader{
+   /* Loader{
         id:ld;
         anchors.fill: parent;
-    }
+    }*/
 
 
 
@@ -123,7 +134,7 @@ ApplicationWindow {
             anchors.bottomMargin: 30
             plugin: mapPlugin
             center: QtPositioning.coordinate(51.9189046, 19.1343786) // Center Poland
-            zoomLevel: 6
+            zoomLevel: 6.3
 
             Component.onCompleted: map.addMapItem(marker2) //addMarker(59.91, 10.75)
 
@@ -149,7 +160,7 @@ ApplicationWindow {
                 }
         }
 
-    Text {
+    /*Text {
         id: textLabel
         objectName: "textLabel"
         text: qsTr("HMMMM")
@@ -168,7 +179,7 @@ ApplicationWindow {
                 buttonTest.text = ":///"
                 clickedButton("xddd")
             }
-        }
+        }*/
 }
 
 

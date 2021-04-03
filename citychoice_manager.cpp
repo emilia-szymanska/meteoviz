@@ -25,10 +25,7 @@ void CitychoiceManager::initCities(QString fileName)
         QString city = fields[2];
         _availableCities.append(city);
 
-        //QJsonObject addressObject;
         _cities[city].geostring = line;
-        //addressObject.insert("geostring", line);
-        //_citiesJson.insert(city, addressObject);
     }
 
     file.close();
@@ -51,11 +48,6 @@ void CitychoiceManager::initGeneralCities(QString fileName)
         double lat = fields[1].toDouble();
         double lon = fields[2].toDouble();
 
-        /*QJsonObject cityGeneraldata;
-        cityGeneraldata.insert("latitude", lat);
-        cityGeneraldata.insert("longitude", lon);
-        cityGeneraldata.insert("weather_code", 0);
-        _generalCitiesJson.insert(city, cityGeneraldata);*/
         CityData newCity;
         newCity.latitude = lat;
         newCity.longitude = lon;
@@ -73,12 +65,23 @@ void CitychoiceManager::initCitiesCombobox()
 }
 
 
-/*Q_INVOKABLE void CitychoiceManager::onButtonClicked(QString str)
+void CitychoiceManager::initMapItems()
 {
-    qDebug() << "button: " << str;
-    emit setTextField("COJEST");
-}*/
+    //QList<QVariant<QVariant> > list;
+    QList<QVariant> list;
+    foreach(const QString& key, _generalCities.keys()){
+        QVariant lat  = _generalCities[key].latitude;
+        QVariant lon  = _generalCities[key].longitude;
+        QVariant code = _generalCities[key].weatherCode;
+        QList <QVariant> tempList;
+        tempList.append(lat);
+        tempList.append(lon);
+        tempList.append(code);
+        list.append(tempList);
+    }
 
+    emit setMapItems(list);
+}
 
 Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
 {

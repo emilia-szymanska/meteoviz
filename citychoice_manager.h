@@ -34,10 +34,12 @@ class CitychoiceManager : public QObject
         void initCities(QString fileName);
         void initGeneralCities(QString fileName);
         void initCitiesCombobox();
+        void initMapItems();
 
     signals:
         void setCitiesCombobox(QVariant list);
         void sendPinPosition(QVariant latitude, QVariant longitude);
+        void setMapItems(QVariant list);
 
     public slots:
         void onCityChosen(QString city);
