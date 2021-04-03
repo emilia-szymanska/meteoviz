@@ -22,6 +22,13 @@ AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citycho
     QObject *topQObjectWindow = _engine->rootObjects().value(0);
     this->initCitychoiceConnections(topQObjectWindow);
     this->_citychoiceMngr->initCitiesCombobox();
+    UrlConnection urlCon = UrlConnection("https://data.climacell.co/");
+    QJsonObject generalWeatherList;
+    QJsonObject coordsObject;
+    coordsObject.insert("coords", "51.107883,17.038538");
+    //coordsObject.insert("weather_code", 321);
+    generalWeatherList.insert("Wroclaw", coordsObject);
+    urlCon.callGeneralWeather(generalWeatherList);
 }
 
 
@@ -38,6 +45,7 @@ void AppManager::changeWindow()
         _engine->load(QUrl(QStringLiteral("qrc:/citychoice.qml")));
         QObject *qObjectWindow = _engine->rootObjects().value(1);
         this->initCitychoiceConnections(qObjectWindow);
+        this->_citychoiceMngr->initCitiesCombobox();
     }
     else{
         _engine->load(QUrl(QStringLiteral("qrc:/weather.qml")));

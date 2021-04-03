@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QQmlApplicationEngine>
 #include <QQuickWindow>
-//#include "ButtonManager.h"
 #include "citychoice_manager.h"
+#include "url_connection.h"
 
 
 class QQmlApplicationEngine;

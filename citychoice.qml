@@ -29,9 +29,8 @@ ApplicationWindow {
     }
 
     function setCitiesList(list){
-
-        for (var i=0; i<list.length; i++)
-                    console.log("Array item:", list[i])
+        //for (var i=0; i<list.length; i++)
+        //            console.log("Array item:", list[i])
         comboBoxCities.model = list
     }
 
