@@ -13,6 +13,8 @@ void CitychoiceManager::initCities(QString fileName)
         QMessageBox::information(0, "error", file.errorString());
     }
 
+    _availableCities.append("None");
+
     QTextStream in(&file);
     while(!in.atEnd()) {
         QString line = in.readLine();
@@ -30,11 +32,17 @@ void CitychoiceManager::initCities(QString fileName)
 }
 
 
+void CitychoiceManager::initCitiesCombobox()
+{
+    emit setCitiesCombobox(_availableCities);
+}
+
+
 Q_INVOKABLE void CitychoiceManager::onButtonClicked(QString str)
 {
     qDebug() << "button: " << str;
     emit setTextField("COJEST");
-    emit setCitiesCombobox(_availableCities);
+    //emit setCitiesCombobox(_availableCities);
 }
 
 
@@ -91,10 +99,6 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
         }
 
     }
-    qDebug() << "city: " << _cityName;
-    qDebug() << lat;
-    qDebug() << lon;
-    qDebug() << "==============";
     emit sendPinPosition(lat, lon);
 
 }

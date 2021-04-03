@@ -12,7 +12,7 @@
 #include <iostream>
 ///
 
-AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, /*ButtonManager *btnMngr,*/ QObject *parent) : QObject(parent)
+AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, QObject *parent) : QObject(parent)
 {
     _engine = engine;
     _citychoiceMngr = citychoiceMngr;
@@ -21,6 +21,7 @@ AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citycho
 
     QObject *topQObjectWindow = _engine->rootObjects().value(0);
     this->initCitychoiceConnections(topQObjectWindow);
+    this->_citychoiceMngr->initCitiesCombobox();
 }
 
 
@@ -33,14 +34,12 @@ void AppManager::changeWindow()
     Q_ASSERT( mainWindow );
 
     _main = !_main;
-    if (_main)
-    {
+    if (_main){
         _engine->load(QUrl(QStringLiteral("qrc:/citychoice.qml")));
         QObject *qObjectWindow = _engine->rootObjects().value(1);
         this->initCitychoiceConnections(qObjectWindow);
-
-    } else
-    {
+    }
+    else{
         _engine->load(QUrl(QStringLiteral("qrc:/weather.qml")));
 
 
@@ -86,6 +85,7 @@ void AppManager::changeWindow()
 
 
     }
+
     mainWindow->close();
     qObjectCurrentWindow->deleteLater();
 }
@@ -104,36 +104,12 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
     // connect C++ signals to QML slots
     QObject::connect(this->_citychoiceMngr, SIGNAL(setTextField(QVariant)),
                              this->_window, SLOT(setTextField(QVariant)));
-    QObject::connect(this->_citychoiceMngr, SIGNAL(sendPinPosition(QVariant, QVariant)),
-                             this->_window, SLOT(addMarker(QVariant, QVariant)));
+    QObject::connect(this->_citychoiceMngr, SIGNAL(sendPinPosition(QVariant,QVariant)),
+                             this->_window, SLOT(addMarker(QVariant,QVariant)));
 
-    //QObject::connect(this->_citychoiceMngr, SIGNAL(setCitiesCombobox(QList<QVariant>)),
-    //                         this->_window, SLOT(setCitiesList(QVariant)));
-    /////////////////////////////////////////////////
-   /* QGeoServiceProvider qGeoService("osm");
-    QGeoCodingManager *pQGeoCoder = qGeoService.geocodingManager();
-    QGeoAddress qGeoAddr;
-    qGeoAddr.setCountry(QString::fromUtf8("Poland"));
-    qGeoAddr.setPostalCode(QString::fromUtf8("10-818"));
-    qGeoAddr.setCity(QString::fromUtf8("Olsztyn"));
-    qGeoAddr.setStreet(QString::fromUtf8("Klosowa 137"));
-    QGeoCodeReply *pQGeoCode = pQGeoCoder->geocode(qGeoAddr);
-        if (!pQGeoCode) {
-          std::cerr << "GeoCoding totally failed!" << std::endl;
+    QObject::connect(this->_citychoiceMngr, SIGNAL(setCitiesCombobox(QVariant)),
+                            this->_window, SLOT(setCitiesList(QVariant)));
 
-        }
-    QEventLoop event;
-    connect(pQGeoCode,SIGNAL(finished()), &event, SLOT(quit()));
-    event.exec();
-    QList<QGeoLocation> qGeoLocs = pQGeoCode->locations();
-    std::cout << qGeoLocs.size() << " location(s) returned." << std::endl;
-    for (QGeoLocation &qGeoLoc : qGeoLocs) {
-                     qGeoLoc.setAddress(qGeoAddr);
-                     QGeoCoordinate qGeoCoord = qGeoLoc.coordinate();
-                     std::cout
-                       << "Lat.:  " << qGeoCoord.latitude() << std::endl
-                       << "Long.: " << qGeoCoord.longitude() << std::endl
-                       << "Alt.:  " << qGeoCoord.altitude() << std::endl;
-                   }*/
+
 }
 

@@ -29,10 +29,11 @@ class CitychoiceManager : public QObject
     public:
         explicit CitychoiceManager(QObject *parent = nullptr);
         void initCities(QString fileName);
+        void initCitiesCombobox();
 
     signals:
         void setTextField(QVariant text);
-        void setCitiesCombobox(QList<QVariant> list);
+        void setCitiesCombobox(/*QList<QVariant> list*/ QVariant list);
         void sendPinPosition(QVariant latitude, QVariant longitude);
 
     public slots:

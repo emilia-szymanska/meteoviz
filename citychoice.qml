@@ -29,9 +29,10 @@ ApplicationWindow {
     }
 
     function setCitiesList(list){
+
         for (var i=0; i<list.length; i++)
                     console.log("Array item:", list[i])
-        //comboBoxCities.model = list
+        comboBoxCities.model = list
     }
 
 
@@ -73,7 +74,7 @@ ApplicationWindow {
 
         ComboBox {
             id: comboBoxCities
-            model: ["None", "Gdansk", "Olsztyn", "Wroclaw"]
+            model: ["None"]
             width: parent.width * 0.5
             height: parent.height
             onCurrentTextChanged:
