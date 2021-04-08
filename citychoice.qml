@@ -10,7 +10,6 @@ ApplicationWindow {
     id: citychoiceWindow
     objectName: "citychoiceWindow"
 
-    //signal clickedButton(string text)
     signal chosenCity(string city)
     function setTextField(text){
         textLabel.text = text
@@ -41,19 +40,27 @@ ApplicationWindow {
                 var item = Component.createObject(citychoiceWindow, {
                            coordinate: QtPositioning.coordinate(elements[0], elements[1])})
 
-               }
+                switch(elements[2])
+                {
+                    case 0: item.sourceItem.source = "img/firework_transparent.gif";
+                        break;
+                    case 1: item.sourceItem.source = "img/firework.gif";
+                        break;
+                    default: item.sourceItem.source = "img/trial.gif";
+                        break;
+                }
 
-                //item.icon2.source = "img/firework.gif"
                 map.addMapItem(item)
+               }
             }
         }
 
 
 
     width: 1200
-    height: 800
+    height: 900
     minimumWidth: 1200
-    minimumHeight: 800
+    minimumHeight: 900
     visible: true
     title: qsTr("MeteoViz")
 
@@ -124,15 +131,28 @@ ApplicationWindow {
         Map {
             id: map
             width: parent.width * 0.75
-            height: parent.height * 0.75
+            height: parent.height * 0.8
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 30
+            anchors.bottomMargin: parent.height * 0.05
             plugin: mapPlugin
             center: QtPositioning.coordinate(51.9189046, 19.1343786) // Center Poland
-            zoomLevel: 6.3
+            zoomLevel: 6.6
 
             Component.onCompleted: map.addMapItem(marker2) //addMarker(59.91, 10.75)
+
+            MouseArea {
+                    anchors.fill: parent
+
+                    onDoubleClicked:  {
+                        var coordinate = map.toCoordinate(Qt.point(mouse.x,mouse.y))
+                        console.log(coordinate)
+                        marker2.coordinate = coordinate
+                        //comboBoxCities.enabled = false
+
+
+                    }
+                }
 
         }
 
