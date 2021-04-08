@@ -9,7 +9,7 @@ UrlConnection::UrlConnection(QString address)
     _urlAddress = address;
 }
 
-void UrlConnection::callGeneralWeather(QMap<QString, CityData> & generalWeatherMap)
+void UrlConnection::callGeneralWeather(QMap<QString, CoordsWeatherData> & generalWeatherMap)
 {
 
     ////// APIKEY ///////////
@@ -26,7 +26,7 @@ void UrlConnection::callGeneralWeather(QMap<QString, CityData> & generalWeatherM
     foreach(const QString& key, generalWeatherMap.keys()) {
         qDebug() << "===================";
         qDebug() << key;
-        CityData cityData = generalWeatherMap.value(key);
+        CoordsWeatherData cityData = generalWeatherMap.value(key);
         QString lat = QString::number(cityData.latitude);
         QString lon = QString::number(cityData.longitude);
         qDebug() << lat;
@@ -47,7 +47,7 @@ void UrlConnection::callGeneralWeather(QMap<QString, CityData> & generalWeatherM
 
 }
 
-void UrlConnection::callDailyWeather(CityDataGeo cityData, QMap<QString, DailyForecast> & fourDayForecast)
+void UrlConnection::callDailyWeather(CityCoords cityData, QMap<QString, DailyForecast> & fourDayForecast)
 {
     ////// APIKEY ///////////
     QFile file("D:/qt_projects/meteoviz/apikey.txt");
@@ -79,7 +79,7 @@ void UrlConnection::callDailyWeather(CityDataGeo cityData, QMap<QString, DailyFo
     foreach(const QString& key, fourDayForecast.keys()) {
         qDebug() << "===================";
         qDebug() << key;
-        /*CityData cityData = fourDayForecast.value(key);
+   /*     CoordsWeatherData cityData = fourDayForecast.value(key);
         QString lat = QString::number(cityData.latitude);
         QString lon = QString::number(cityData.longitude);
         qDebug() << lat;

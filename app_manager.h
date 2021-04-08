@@ -25,6 +25,7 @@ class AppManager : public QObject
         explicit AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, WeatherManager *weatherMngr, QObject *parent = nullptr);
         Q_INVOKABLE void changeWindow();
         void initCitychoiceConnections(QObject *qObjectWindow);
+        void initWeatherConnections(QObject *qObjectWindow);
 
 
 };

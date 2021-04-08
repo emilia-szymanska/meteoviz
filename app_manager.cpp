@@ -47,7 +47,10 @@ void AppManager::changeWindow()
     }
     else{
         _engine->load(QUrl(QStringLiteral("qrc:/weather.qml")));
+        QObject *qObjectWindow = _engine->rootObjects().value(1);
+        this->initWeatherConnections(qObjectWindow);
         this->_weatherMngr->setCity(this->_citychoiceMngr->selectedCity());
+
     }
 
     mainWindow->close();
@@ -62,6 +65,8 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
     // connect QML signals to C++ slots
     QObject::connect(this->_window, SIGNAL(chosenCity(QString)),
                              this->_citychoiceMngr, SLOT(onCityChosen(QString)));
+    QObject::connect(this->_window, SIGNAL(customCoords(QString)),
+                             this->_citychoiceMngr, SLOT(onCustomCoords(QString)));
 
     // connect C++ signals to QML slots
     QObject::connect(this->_citychoiceMngr, SIGNAL(sendPinPosition(QVariant,QVariant)),
@@ -75,3 +80,11 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
 
 }
 
+void AppManager::initWeatherConnections(QObject *qObjectWindow)
+{
+    this->_window = qobject_cast<QQuickWindow *>(qObjectWindow);
+
+   QObject::connect(this->_weatherMngr, SIGNAL(setCityLabel(QVariant)),
+                            this->_window, SLOT(setCityLabel(QVariant)));
+
+}

@@ -10,6 +10,7 @@ ApplicationWindow {
     id: citychoiceWindow
     objectName: "citychoiceWindow"
 
+    signal customCoords(string coords)
     signal chosenCity(string city)
     function setTextField(text){
         textLabel.text = text
@@ -44,7 +45,7 @@ ApplicationWindow {
                 {
                     case 0: item.sourceItem.source = "img/firework_transparent.gif";
                         break;
-                    case 1: item.sourceItem.source = "img/firework.gif";
+                    case 1101: item.sourceItem.source = "img/firework.gif";
                         break;
                     default: item.sourceItem.source = "img/trial.gif";
                         break;
@@ -132,8 +133,14 @@ ApplicationWindow {
                 leftMargin: parent.width * 0.1
             }
             onClicked: {
+                if(comboBoxCities.currentText == "Custom"){
+                   var coordsFormat = marker2.coordinate.latitude + "," + marker2.coordinate.longitude
+                   // console.log(coordsFormat)
+                   customCoords(coordsFormat)
+                }
+
                 appManager.changeWindow()
-                console.log(marker2.coordinate)
+                //console.log(marker2.coordinate)
                 //citychoiceWindow.close()
                 //ld.source="weather.qml"
             }
@@ -164,6 +171,9 @@ ApplicationWindow {
                     onDoubleClicked:  {
                         var coordinate = map.toCoordinate(Qt.point(mouse.x,mouse.y))
                         console.log(coordinate)
+                        //console.log(coordinate.latitude)
+                        //console.log(coordinate.longitude)
+
                         marker2.coordinate = coordinate
                         marker2.visible = true
                         comboBoxCities.currentIndex = 1

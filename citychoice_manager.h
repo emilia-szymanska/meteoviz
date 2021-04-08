@@ -24,19 +24,23 @@ class CitychoiceManager : public QObject
     Q_OBJECT
 
     private:
-        QPair<QString, CityData> _selectedCity;
+        QPair<QString, CityCoords> _selectedCity;
+        QList <QVariant> _availableCities;
+        QMap <QString, CityCoords> _cities;
+        QMap <QString, CoordsWeatherData> _generalCities;
+        /*QPair<QString, CityData> _selectedCity;
         QString _cityName = "";
         QList <QVariant> _availableCities;
         QMap <QString, CityDataGeo> _cities;
         QMap <QString, CityData> _generalCities;
-
+*/
     public:
         explicit CitychoiceManager(QObject *parent = nullptr);
         void initCities(QString fileName);
         void initGeneralCities(QString fileName);
         void initCitiesCombobox();
         void initMapItems();
-        std::pair<QString, CityDataGeo> selectedCity();
+        QPair<QString, CityCoords> selectedCity();
 
     signals:
         void setCitiesCombobox(QVariant list);
@@ -45,6 +49,7 @@ class CitychoiceManager : public QObject
 
     public slots:
         void onCityChosen(QString city);
+        void onCustomCoords(QString coords);
 };
 
 #endif // CITYCHOICEMANAGER_H

@@ -5,18 +5,24 @@
 #include <iostream>
 #include <QString>
 
-struct CityData
+struct CoordsWeatherData
 {
     double latitude  = 200.0;
     double longitude = 200.0;
     int weatherCode  = 0;
 };
 
-struct CityDataGeo
+/*struct CityDataGeo
 {
     double latitude  = 200.0;
     double longitude = 200.0;
     QString geostring = "";
+};*/
+
+struct CityCoords
+{
+    double latitude  = 200.0;
+    double longitude = 200.0;
 };
 
 

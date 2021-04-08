@@ -24,16 +24,17 @@ class WeatherManager : public QObject
     Q_OBJECT
 
     private:
-        QString _cityName = "";
-        CityDataGeo _cityData;
+        //QString _cityName = "";
+        //CityCoords _cityData;
+        QPair<QString, CityCoords> _selectedCity;
         QMap<QString, DailyForecast> _fourDayWeather;
 
     public:
         explicit WeatherManager(QObject *parent = nullptr);
-        void setCity(std::pair<QString, CityDataGeo> city);
+        void setCity(QPair<QString, CityCoords> city);
 
     signals:
-
+        void setCityLabel(QVariant cityName);
 };
 
 #endif // WEATHERMANAGER_H

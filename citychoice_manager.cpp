@@ -22,16 +22,17 @@ void CitychoiceManager::initCities(QString fileName)
 
     QTextStream in(&file);
     in.setCodec("UTF-8");
-    while(!in.atEnd()) {
-                QString line = in.readLine();
-                QStringList fields = line.split(" ");
-                QString city = fields[0];
-                city.replace("_", " ");
-                _availableCities.append(city);
+    while(!in.atEnd())
+    {
+        QString line = in.readLine();
+        QStringList fields = line.split(" ");
+        QString city = fields[0];
+        city.replace("_", " ");
+        _availableCities.append(city);
 
-                _cities[city].geostring = line;
-                _cities[city].latitude = fields[2].toDouble();
-                _cities[city].longitude = fields[1].toDouble();
+                //_cities[city].geostring = line;
+        _cities[city].latitude = fields[2].toDouble();
+        _cities[city].longitude = fields[1].toDouble();
 
         /*
         QString line = in.readLine();
@@ -62,7 +63,7 @@ void CitychoiceManager::initGeneralCities(QString fileName)
         double lat = fields[1].toDouble();
         double lon = fields[2].toDouble();
 
-        CityData newCity;
+        CoordsWeatherData newCity;
         newCity.latitude = lat;
         newCity.longitude = lon;
         newCity.weatherCode = 0;
@@ -98,28 +99,26 @@ void CitychoiceManager::initMapItems()
 }
 
 
-std::pair<QString, CityDataGeo> CitychoiceManager::selectedCity()
+QPair<QString, CityCoords> CitychoiceManager::selectedCity()
 {
-    return std::pair<QString, CityDataGeo>(_cityName, _cities[_cityName]);
+    return _selectedCity;
 }
 
 
 Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
 {
-    this->_cityName = city;
+    this->_selectedCity.first = city;
     double lat = 0.00;
     double lon = 0.00;
-    if (_cityName != "None" && _cityName != "Custom")
+    if (city != "None" && city != "Custom")
     {
-        CityDataGeo cityData = _cities[_cityName];
+        CityCoords cityData = _cities[city];
         if( cityData.latitude < 190.0)
         {
             lat = cityData.latitude;
             lon = cityData.longitude;
-            _selectedCity.first = city;
-
         }
-        else
+        /*else
         {
             QString geostring = cityData.geostring;
             QStringList fields = geostring.split(",");
@@ -153,12 +152,19 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
             _cities[_cityName].latitude = lat;
             _cities[_cityName].longitude = lon;
 
-        }
+        }*/
     qDebug() << lat;
     qDebug() << lon;
     emit sendPinPosition(lat, lon);
     }
+}
 
 
+Q_INVOKABLE void CitychoiceManager::onCustomCoords(QString coords)
+{
+    qDebug() << coords;
+    QStringList fields = coords.split(",");
+    _selectedCity.second.latitude = fields[0].toDouble();
+    _selectedCity.second.longitude = fields[1].toDouble();
 }
 
