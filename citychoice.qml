@@ -101,6 +101,10 @@ ApplicationWindow {
             onCurrentTextChanged:
             {
                 chosenCity(currentText)
+                if(currentText == "Custom" && marker2.visible == false){
+                    addMarker(51.9189046, 19.1343786)
+                }
+
                // textLabel.text = currentText
             }
         }
