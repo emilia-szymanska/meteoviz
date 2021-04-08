@@ -4,14 +4,15 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtPositioning 5.12
 import QtQuick.Layouts 1.12
+import QtCharts 2.15
 
 ApplicationWindow {
     id: weatherWindow
     objectName: "weatherWindow"
     width: 1200
-    height: 800
+    height: 900
     minimumWidth: 1200
-    minimumHeight: 800
+    minimumHeight: 900
     visible: true
     title: qsTr("MeteoViz")
 
@@ -71,19 +72,20 @@ ApplicationWindow {
                 width: parent.width * 0.5
                 height: parent.height
 
+
                 Row{
                     width: parent.width
-                    height: parent.height * 0.5
+                    height: parent.height * 0.33
 
-                    Image {
-                        width: parent.width * 0.1
+                    Image{
+                        width: parent.width * 0.20
                         height: parent.height
                         source: "img/example.jpg"
                     }
 
                     Text {
                         id: textTemperature
-                        width: parent.width * 0.23
+                        width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("22 C")
                         font.pointSize: 10
@@ -92,15 +94,37 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
 
-                    Image {
-                        width: parent.width * 0.1
+                    Image{
+                        width: parent.width * 0.20
+                        height: parent.height
+                        source: "img/example.jpg"
+                    }
+
+                    Text {
+                        id: textPressure
+                        width: parent.width * 0.3
+                        height: parent.height
+                        text: qsTr("1020 hPa")
+                        font.pointSize: 10
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+
+                Row{
+                    width: parent.width
+                    height: parent.height * 0.33
+
+                    Image{
+                        width: parent.width * 0.20
                         height: parent.height
                         source: "img/example.jpg"
                     }
 
                     Text {
                         id: textWindVel
-                        width: parent.width * 0.23
+                        width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("4 m/s")
                         font.pointSize: 10
@@ -109,15 +133,54 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
 
-                    Image {
-                        width: parent.width * 0.1
+                    Image{
+                        width: parent.width * 0.20
+                        height: parent.height
+                        source: "img/example.jpg"
+                    }
+
+                    Text {
+                        id: textWindDirection
+                        width: parent.width * 0.3
+                        height: parent.height
+                        text: qsTr("1020 hPa")
+                        font.pointSize: 10
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+
+                Row{
+                    width: parent.width
+                    height: parent.height * 0.34
+
+                    Image{
+                        width: parent.width * 0.20
+                        height: parent.height
+                        source: "img/example.jpg"
+                    }
+
+                    Text {
+                        id: textRain
+                        width: parent.width * 0.3
+                        height: parent.height
+                        text: qsTr("10 mm")
+                        font.pointSize: 10
+                        fontSizeMode: Text.Fit
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+
+                    Image{
+                        width: parent.width * 0.20
                         height: parent.height
                         source: "img/example.jpg"
                     }
 
                     Text {
                         id: textHumidity
-                        width: parent.width * 0.24
+                        width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("50%")
                         font.pointSize: 10
@@ -127,61 +190,6 @@ ApplicationWindow {
                     }
                 }
 
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.5
-
-                    Image {
-                        width: parent.width * 0.1
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textPressure
-                        width: parent.width * 0.23
-                        height: parent.height
-                        text: qsTr("1020hPa")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Image {
-                        width: parent.width * 0.1
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textWindDirection
-                        width: parent.width * 0.23
-                        height: parent.height
-                        text: qsTr("NE")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Image {
-                        width: parent.width * 0.1
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textRain
-                        width: parent.width * 0.24
-                        height: parent.height
-                        text: qsTr("10mm")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
             }
 
             Rectangle{
@@ -221,27 +229,76 @@ ApplicationWindow {
 
         Row{
             width: parent.width
-            height: parent.height * 0.2
+            height: parent.height * 0.3
 
-            Image {
+            ChartView {
+                title: "Temperature"
+                legend.visible: false
+                backgroundColor: "transparent"
+                plotAreaColor: "white"
+                //anchors.fill: parent
                 width: parent.width * 0.5
                 height: parent.height
-                source: "img/example.jpg"
+                antialiasing: true
+
+                SplineSeries {
+                    //name: "SplineSeries"
+                    XYPoint { x: 0; y: 0.0 }
+                    XYPoint { x: 1.1; y: 3.2 }
+                    XYPoint { x: 1.9; y: 2.4 }
+                    XYPoint { x: 2.1; y: 2.1 }
+                    XYPoint { x: 2.9; y: 2.6 }
+                    XYPoint { x: 3.2; y: 2.3 }
+                    XYPoint { x: 4.1; y: 3.1 }
+                }
+                /*ValueAxis {
+                        id: xAxis
+                        min: 0
+                        max: 5
+                    }*/
             }
 
-            Image {
+            ChartView {
+                title: "Precipitation"
+                legend.visible: false
+                backgroundColor: "transparent"
+                plotAreaColor: "white"
+                //anchors.fill: parent
                 width: parent.width * 0.5
                 height: parent.height
-                source: "img/example.jpg"
+                antialiasing: true
+
+                SplineSeries {
+                    //name: "SplineSeries"
+                    XYPoint { x: 0; y: 0.0 }
+                    XYPoint { x: 1.1; y: 3.2 }
+                    XYPoint { x: 1.9; y: 2.4 }
+                    XYPoint { x: 2.1; y: 2.1 }
+                    XYPoint { x: 2.9; y: 2.6 }
+                    XYPoint { x: 3.2; y: 2.3 }
+                    XYPoint { x: 4.1; y: 3.1 }
+                }
+                /*ValueAxis {
+                        id: yAxis
+                        min: 0
+                        max: 5
+                    }*/
             }
+
         }
 
         Row{
             width: parent.width
-            height: parent.height * 0.5
+            height: parent.height * 0.4
+
+            Rectangle{
+                width: parent.width * 0.05
+                height: parent.height
+                color: "transparent"
+            }
 
             Column{
-                width: parent.width * 0.33
+                width: parent.width * 0.27
                 height: parent.height
 
                 Row{
@@ -386,8 +443,14 @@ ApplicationWindow {
 
             }
 
+            Rectangle{
+                width: parent.width * 0.05
+                height: parent.height
+                color: "transparent"
+            }
+
             Column{
-                width: parent.width * 0.33
+                width: parent.width * 0.27
                 height: parent.height
 
                 Row{
@@ -532,8 +595,14 @@ ApplicationWindow {
 
             }
 
+            Rectangle{
+                width: parent.width * 0.05
+                height: parent.height
+                color: "transparent"
+            }
+
             Column{
-                width: parent.width * 0.33
+                width: parent.width * 0.26
                 height: parent.height
 
                 Row{
@@ -676,6 +745,12 @@ ApplicationWindow {
                     }
                 }
 
+            }
+
+            Rectangle{
+                width: parent.width * 0.05
+                height: parent.height
+                color: "transparent"
             }
         }
     }

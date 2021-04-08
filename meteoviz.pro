@@ -1,4 +1,4 @@
-QT += quick widgets location
+QT += quick widgets location charts
 
 CONFIG += c++11
 
