@@ -2,7 +2,8 @@
 
 WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 {
-
+    _urlCon = UrlConnection("https://data.climacell.co/");
+    //urlCon.callGeneralWeather(_generalCities);
 }
 
 
@@ -24,13 +25,19 @@ void WeatherManager::setCity(QPair<QString, CityCoords> city)
         if (lon > 0.00) longitudePart = "E";
         else longitudePart = "W";
 
-        QString coordsString = QString::number(lat) + latitudePart + "  " + QString::number(lon) + longitudePart;
+        QString coordsString = QString::number(lat) + "\u00B0" + latitudePart + "  " + QString::number(lon) + "\u00B0" + longitudePart;
         emit setCityLabel(coordsString);
     }
     //_cityName = city.first;
     //_cityData = city.second;
 }
 
+
+void WeatherManager::callFourDayForecast()
+{
+    QMap<QString, DailyForecast> fourDayForecast;
+    _urlCon.callDailyWeather(_selectedCity.second, fourDayForecast);
+}
 
 //UrlConnection urlCon = UrlConnection("https://data.climacell.co/");
 //urlCon.callGeneralWeather(_generalCities);

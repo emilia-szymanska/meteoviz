@@ -28,12 +28,13 @@ struct CityCoords
 
 struct DailyForecast
 {
-    int temperature = 0;
-    int pressure = 0;
-    int windSpeed = 0;
+    double temperature = 0;
+    double pressure = 0;
+    double windSpeed = 0;
     QString windDirection = "";
-    int precipitation = 0;
-    int humidity = 0;
+    double precipitation = 0;
+    double humidity = 0;
+    int weatherCode = 0;
 
 };
 

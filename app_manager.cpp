@@ -50,6 +50,7 @@ void AppManager::changeWindow()
         QObject *qObjectWindow = _engine->rootObjects().value(1);
         this->initWeatherConnections(qObjectWindow);
         this->_weatherMngr->setCity(this->_citychoiceMngr->selectedCity());
+        this->_weatherMngr->callFourDayForecast();
 
     }
 

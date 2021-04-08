@@ -18,6 +18,7 @@
 #include <iostream>
 #include <QMap>
 #include "additional_structs.h"
+#include "url_connection.h"
 
 class WeatherManager : public QObject
 {
@@ -28,10 +29,12 @@ class WeatherManager : public QObject
         //CityCoords _cityData;
         QPair<QString, CityCoords> _selectedCity;
         QMap<QString, DailyForecast> _fourDayWeather;
+        UrlConnection _urlCon;
 
     public:
         explicit WeatherManager(QObject *parent = nullptr);
         void setCity(QPair<QString, CityCoords> city);
+        void callFourDayForecast();
 
     signals:
         void setCityLabel(QVariant cityName);
