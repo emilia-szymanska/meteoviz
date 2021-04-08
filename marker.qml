@@ -11,12 +11,13 @@ MapQuickItem
     anchorPoint.x: 20
     anchorPoint.y: 20 //marker.height
     sourceItem:
-        Image{
+        //Image{
+        //    id: icon3
             AnimatedImage{
                 id: icon2
                 source: "img/trial.gif"
                 width: 40
                 height: 40
             }
-       }
+       //}
 }

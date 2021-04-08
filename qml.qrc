@@ -5,5 +5,10 @@
         <file>img/example.jpg</file>
         <file>img/trial.gif</file>
         <file>weather.qml</file>
+        <file>marker.qml</file>
+        <file>img/firework.gif</file>
+        <file>img/firework_transparent.gif</file>
+        <file>img/sun.png</file>
+        <file>text_files/polish_cities.txt</file>
     </qresource>
 </RCC>

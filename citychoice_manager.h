@@ -24,6 +24,7 @@ class CitychoiceManager : public QObject
     Q_OBJECT
 
     private:
+        QPair<QString, CityData> _selectedCity;
         QString _cityName = "";
         QList <QVariant> _availableCities;
         QMap <QString, CityDataGeo> _cities;

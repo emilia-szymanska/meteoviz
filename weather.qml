@@ -35,26 +35,36 @@ ApplicationWindow {
             Text {
                 id: textChosenCity
                 text: qsTr("Warsaw")
-                width: parent.width * 0.2
+                width: parent.width * 0.25
                 height: parent.height
-                font.pointSize: 10
+                font.pointSize: 14
+                font.bold: true
+                font.capitalization: Font.AllUppercase
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
 
+            Rectangle{
+                width: parent.width * 0.05
+                height: parent.height
+                color: "transparent"
+            }
 
             Text {
                 id: textDate
                 text: qsTr("26.03.2021")
-                width: parent.width * 0.3
+                width: parent.width * 0.35
                 height: parent.height
-                font.pointSize: 10
+                font.pointSize: 14
+                font.bold: true
                 fontSizeMode: Text.Fit
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.leftMargin: parent.width * 0.4
             }
+
+
         }
 
         Row {
@@ -65,11 +75,17 @@ ApplicationWindow {
                 id: imageState
                 width: parent.width * 0.25
                 height: parent.height
-                source: "img/example.jpg"
+                source: "img/sun.png"
+            }
+
+            Rectangle{
+                width: parent.width * 0.05
+                height: parent.height
+                color: "transparent"
             }
 
             Column{
-                width: parent.width * 0.5
+                width: parent.width * 0.35
                 height: parent.height
 
 
@@ -88,7 +104,7 @@ ApplicationWindow {
                         width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("22 C")
-                        font.pointSize: 10
+                        font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -105,7 +121,7 @@ ApplicationWindow {
                         width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("1020 hPa")
-                        font.pointSize: 10
+                        font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -127,7 +143,7 @@ ApplicationWindow {
                         width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("4 m/s")
-                        font.pointSize: 10
+                        font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -143,8 +159,8 @@ ApplicationWindow {
                         id: textWindDirection
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("1020 hPa")
-                        font.pointSize: 10
+                        text: qsTr("NE")
+                        font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -166,7 +182,7 @@ ApplicationWindow {
                         width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("10 mm")
-                        font.pointSize: 10
+                        font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -183,7 +199,7 @@ ApplicationWindow {
                         width: parent.width * 0.3
                         height: parent.height
                         text: qsTr("50%")
-                        font.pointSize: 10
+                        font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -193,7 +209,7 @@ ApplicationWindow {
             }
 
             Rectangle{
-                width: parent.width * 0.1
+                width: parent.width * 0.2
                 height: parent.height
                 color: "transparent"
             }
@@ -308,7 +324,7 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.4
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/sun.png"
                     }
 
                     Text {
@@ -316,7 +332,8 @@ ApplicationWindow {
                         width: parent.width * 0.6
                         height: parent.height
                         text: qsTr("27.03.2021")
-                        font.pointSize: 10
+                        font.pointSize: 12
+                        font.bold: true
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -394,7 +411,7 @@ ApplicationWindow {
                         id: textWindDirection1
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("1020 hPa")
+                        text: qsTr("NE")
                         font.pointSize: 10
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -460,7 +477,7 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.4
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/sun.png"
                     }
 
                     Text {
@@ -468,7 +485,8 @@ ApplicationWindow {
                         width: parent.width * 0.6
                         height: parent.height
                         text: qsTr("28.03.2021")
-                        font.pointSize: 10
+                        font.pointSize: 12
+                        font.bold: true
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -546,7 +564,7 @@ ApplicationWindow {
                         id: textWindDirection2
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("1020 hPa")
+                        text: qsTr("NE")
                         font.pointSize: 10
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -612,7 +630,7 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.4
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/sun.png"
                     }
 
                     Text {
@@ -620,7 +638,8 @@ ApplicationWindow {
                         width: parent.width * 0.6
                         height: parent.height
                         text: qsTr("28.03.2021")
-                        font.pointSize: 10
+                        font.pointSize: 12
+                        font.bold: true
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
@@ -698,7 +717,7 @@ ApplicationWindow {
                         id: textWindDirection3
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("1020 hPa")
+                        text: qsTr("NE")
                         font.pointSize: 10
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter

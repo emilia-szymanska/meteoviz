@@ -26,7 +26,6 @@ ApplicationWindow {
 
     function setCitiesList(list){
         comboBoxCities.model = list
-        console.log(list)
     }
 
     function setMapItems(list){
@@ -98,11 +97,17 @@ ApplicationWindow {
             model: ["None"]
             width: parent.width * 0.5
             height: parent.height
+            editable: true
             onCurrentTextChanged:
             {
+                console.log(currentText)
                 chosenCity(currentText)
                 if(currentText == "Custom" && marker2.visible == false){
                     addMarker(51.9189046, 19.1343786)
+                }
+                if(currentText == "None" && marker2.visible == true)
+                {
+                    marker2.visible = false
                 }
 
                // textLabel.text = currentText
@@ -128,6 +133,7 @@ ApplicationWindow {
             }
             onClicked: {
                 appManager.changeWindow()
+                console.log(marker2.coordinate)
                 //citychoiceWindow.close()
                 //ld.source="weather.qml"
             }
@@ -160,15 +166,7 @@ ApplicationWindow {
                         console.log(coordinate)
                         marker2.coordinate = coordinate
                         marker2.visible = true
-                        //comboBoxCities.currentText = "Custom"
-                        //x =  comboBoxCities.find("Custom")
-                        //comboBoxCities.displayText = "Custom"
-                        //console.log(comboBoxCities.currentText)
-                        //y =  comboBoxCities.find("Gdansk")
-                        //console.log(x)
-                        //console.log(y)
                         comboBoxCities.currentIndex = 1
-                        //comboBoxCities.get(index).text = "Custom"
 
                     }
                 }

@@ -2,7 +2,8 @@
 
 CitychoiceManager::CitychoiceManager(QObject *parent) : QObject(parent)
 {
-    initCities("D:/qt_projects/meteoviz/available_cities.txt");
+    initCities("D:/qt_projects/meteoviz/text_files/polish_cities.txt");
+    //initCities("D:/qt_projects/meteoviz/available_cities.txt");
     initGeneralCities("D:/qt_projects/meteoviz/general_cities.txt");
     UrlConnection urlCon = UrlConnection("https://data.climacell.co/");
     urlCon.callGeneralWeather(_generalCities);
@@ -20,13 +21,25 @@ void CitychoiceManager::initCities(QString fileName)
     _availableCities.append("Custom");
 
     QTextStream in(&file);
+    in.setCodec("UTF-8");
     while(!in.atEnd()) {
+                QString line = in.readLine();
+                QStringList fields = line.split(" ");
+                QString city = fields[0];
+                city.replace("_", " ");
+                _availableCities.append(city);
+
+                _cities[city].geostring = line;
+                _cities[city].latitude = fields[2].toDouble();
+                _cities[city].longitude = fields[1].toDouble();
+
+        /*
         QString line = in.readLine();
         QStringList fields = line.split(",");
         QString city = fields[2];
         _availableCities.append(city);
 
-        _cities[city].geostring = line;
+        _cities[city].geostring = line;*/
     }
 
     file.close();
@@ -103,6 +116,8 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
         {
             lat = cityData.latitude;
             lon = cityData.longitude;
+            _selectedCity.first = city;
+
         }
         else
         {
@@ -139,7 +154,8 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
             _cities[_cityName].longitude = lon;
 
         }
-
+    qDebug() << lat;
+    qDebug() << lon;
     emit sendPinPosition(lat, lon);
     }
 

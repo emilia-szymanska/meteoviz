@@ -47,7 +47,7 @@ void UrlConnection::callGeneralWeather(QMap<QString, CityData> & generalWeatherM
 
 }
 
-void UrlConnection::callDailyWeather(QString city, QMap<QString, DailyForecast> & fourDayForecast)
+void UrlConnection::callDailyWeather(CityDataGeo cityData, QMap<QString, DailyForecast> & fourDayForecast)
 {
     ////// APIKEY ///////////
     QFile file("D:/qt_projects/meteoviz/apikey.txt");
@@ -59,6 +59,22 @@ void UrlConnection::callDailyWeather(QString city, QMap<QString, DailyForecast> 
     file.close();
 
     QNetworkAccessManager manager;
+
+    QString lat = QString::number(cityData.latitude);
+    QString lon = QString::number(cityData.longitude);
+    /////////
+    ///ADD TIME
+    QString url = this->_urlAddress + "v4/timelines?location=" + lat + "," + lon +
+                    "&fields=temperature,humidity&timesteps=1d&startTime=2021-04-03T15:00:00Z&endTime=2021-04-03T20:00:00Z&units=metric&apikey=" + apikey;
+    QNetworkReply *response = manager.get(QNetworkRequest(QUrl(url)));
+
+    QEventLoop event;
+    QObject::connect(response, SIGNAL(finished()), &event, SLOT(quit()));
+    event.exec();
+
+    QString content = response->readAll();
+    int weatherCode = this->readWeathercode(content);
+    //generalWeatherMap[key].weatherCode = weatherCode;
 
     foreach(const QString& key, fourDayForecast.keys()) {
         qDebug() << "===================";
