@@ -7,6 +7,21 @@ import QtQuick.Layouts 1.12
 import QtCharts 2.15
 
 ApplicationWindow {
+    function setCityLabel(cityName)
+    {
+        textChosenCity.text = cityName
+    }
+
+    function datePlusX(value)
+    {
+        console.log(value)
+        var currentDate = new Date();
+        console.log(currentDate)
+        currentDate.setDate(currentDate.getDate() + value);
+        console.log(currentDate)
+        return currentDate
+    }
+
     id: weatherWindow
     objectName: "weatherWindow"
     width: 1200
@@ -15,6 +30,8 @@ ApplicationWindow {
     minimumHeight: 900
     visible: true
     title: qsTr("MeteoViz")
+
+
 
     Column{
         anchors {
@@ -53,7 +70,7 @@ ApplicationWindow {
 
             Text {
                 id: textDate
-                text: qsTr("26.03.2021")
+                text: Qt.formatDateTime(new Date(), "dd.MM.yyyy")
                 width: parent.width * 0.35
                 height: parent.height
                 font.pointSize: 14
@@ -331,7 +348,7 @@ ApplicationWindow {
                         id: textDate1
                         width: parent.width * 0.6
                         height: parent.height
-                        text: qsTr("27.03.2021")
+                        text: /*Qt.formatDateTime(new Date() + 1, "dd.MM.yyyy")*/ Qt.formatDateTime(datePlusX(1), "dd.MM.yyyy")
                         font.pointSize: 12
                         font.bold: true
                         fontSizeMode: Text.Fit
@@ -484,7 +501,7 @@ ApplicationWindow {
                         id: textDate2
                         width: parent.width * 0.6
                         height: parent.height
-                        text: qsTr("28.03.2021")
+                        text: Qt.formatDateTime(datePlusX(2), "dd.MM.yyyy")
                         font.pointSize: 12
                         font.bold: true
                         fontSizeMode: Text.Fit
@@ -637,7 +654,7 @@ ApplicationWindow {
                         id: textDate3
                         width: parent.width * 0.6
                         height: parent.height
-                        text: qsTr("28.03.2021")
+                        text: Qt.formatDateTime(datePlusX(3), "dd.MM.yyyy")
                         font.pointSize: 12
                         font.bold: true
                         fontSizeMode: Text.Fit
