@@ -26,6 +26,7 @@ ApplicationWindow {
 
     function setCitiesList(list){
         comboBoxCities.model = list
+        console.log(list)
     }
 
     function setMapItems(list){
@@ -104,6 +105,12 @@ ApplicationWindow {
             }
         }
 
+        Rectangle{
+            width: parent.width * 0.05
+            height: parent.height
+            color: "transparent"
+        }
+
         Button{
             id: buttonNext
             text: qsTr("NEXT")
@@ -148,8 +155,16 @@ ApplicationWindow {
                         var coordinate = map.toCoordinate(Qt.point(mouse.x,mouse.y))
                         console.log(coordinate)
                         marker2.coordinate = coordinate
-                        //comboBoxCities.enabled = false
-
+                        marker2.visible = true
+                        //comboBoxCities.currentText = "Custom"
+                        //x =  comboBoxCities.find("Custom")
+                        //comboBoxCities.displayText = "Custom"
+                        //console.log(comboBoxCities.currentText)
+                        //y =  comboBoxCities.find("Gdansk")
+                        //console.log(x)
+                        //console.log(y)
+                        comboBoxCities.currentIndex = 1
+                        //comboBoxCities.get(index).text = "Custom"
 
                     }
                 }
@@ -175,27 +190,6 @@ ApplicationWindow {
                     }
                 }
         }
-
-    /*Text {
-        id: textLabel
-        objectName: "textLabel"
-        text: qsTr("HMMMM")
-        font.pointSize: 10
-        width: parent.width * 0.28
-        height: parent.height
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-    }
-
-    Button {
-            id: buttonTest
-            objectName: "buttonTest"
-            text: qsTr("MEH")
-            onClicked: {
-                buttonTest.text = ":///"
-                clickedButton("xddd")
-            }
-        }*/
 }
 
 

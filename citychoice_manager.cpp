@@ -17,6 +17,7 @@ void CitychoiceManager::initCities(QString fileName)
     }
 
     _availableCities.append("None");
+    _availableCities.append("Custom");
 
     QTextStream in(&file);
     while(!in.atEnd()) {
@@ -95,7 +96,7 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
     this->_cityName = city;
     double lat = 0.00;
     double lon = 0.00;
-    if (_cityName != "None")
+    if (_cityName != "None" && _cityName != "Custom")
     {
         CityDataGeo cityData = _cities[_cityName];
         if( cityData.latitude < 190.0)
@@ -139,8 +140,9 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
 
         }
 
-    }
     emit sendPinPosition(lat, lon);
+    }
+
 
 }
 
