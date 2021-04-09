@@ -43,7 +43,9 @@ class WeatherManager : public QObject
     signals:
         void setCityLabel(QVariant cityName);
         void setFourDayForecast(QVariant list);
-        void setGraphForecast(QVariant list);
+        void setGraphTempForecast(QVariant list);
+        void setGraphPrecForecast(QVariant list);
+        void setGraphForecast(QVariant listTemp, QVariant listPrec);
 };
 
 #endif // WEATHERMANAGER_H

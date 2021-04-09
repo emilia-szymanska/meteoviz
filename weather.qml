@@ -25,10 +25,8 @@ ApplicationWindow {
         var date = new Date();
         date.setHours(date.getHours() + value);
         date.setMinutes(0, 0, 0)
-        console.log(date)
         return date
     }
-
 
 
     function setFourWeatherForecast(list){
@@ -101,19 +99,7 @@ ApplicationWindow {
     function updateTemperatureSeries(list){
         var min = 100
         var max = -100
-        console.log(list)
-        //min = 0
-        //max = 20
-        /*temperatureSeries.insert(0, fullHourPlusX(0), list[0])
-        temperatureSeries.insert(1, fullHourPlusX(2), list[1])
-        temperatureSeries.insert(2, fullHourPlusX(2), list[2])
-        temperatureSeries.insert(3, fullHourPlusX(3), list[3])
-        temperatureSeries.insert(4, fullHourPlusX(4), list[4])
-        temperatureSeries.insert(5, fullHourPlusX(5), list[5])
-        temperatureSeries.insert(6, fullHourPlusX(6), list[6])
-        temperatureSeries.insert(7, fullHourPlusX(7), list[7])
-*/
-        console.log("=======================")
+
         for(let i = 0; i < list.length; i++)
         {
             if(min > list[i]) min = list[i]
@@ -123,7 +109,53 @@ ApplicationWindow {
         }
         tempAxisY.min = min-1
         tempAxisY.max = max+1
+    }
 
+    function updatePrecitipationSeries(list){
+        var min = 100
+        var max = -100
+
+        for(let i = 0; i < list.length; i++)
+        {
+            if(min > list[i]) min = list[i]
+            if(max < list[i]) max = list[i]
+
+            precitipationSeries.insert(i, fullHourPlusX(i), list[i])
+        }
+        tempAxisY.min = min-1
+        tempAxisY.max = max+1
+    }
+
+    function updateSeries(listTemp, listPrec){
+        var minTemp = 100
+        var maxTemp = -100
+        var minPrec = 100
+        var maxPrec = -100
+
+        for(let i = 0; i < listTemp.length; i++)
+        {
+            if(minTemp > listTemp[i]) minTemp = listTemp[i]
+            if(maxTemp < listTemp[i]) maxTemp = listTemp[i]
+
+            temperatureSeries.insert(i, fullHourPlusX(i), listTemp[i])
+        }
+        tempAxisY.min = minTemp-1
+        tempAxisY.max = maxTemp+1
+
+
+        for(let j = 0; j < listPrec.length; j++)
+        {
+            if(minPrec > listPrec[j]) minPrec = listPrec[j]
+            if(maxPrec < listPrec[j]) maxPrec = listPrec[j]
+
+            precitipationSeries.insert(j, fullHourPlusX(j), listPrec[j])
+        }
+        console.log(listPrec);
+//precitipationSeries.insert(0, "2014", [0.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0]);
+//precitipationSeries.insert(1, "hmmm2", listPrec);
+        if(minPrec <= 1) precAxisY.min = minPrec
+        else precAxisY.min = minPrec-1
+        precAxisY.max = maxPrec+1
     }
 
     id: weatherWindow
@@ -389,6 +421,7 @@ ApplicationWindow {
                     min: 0.0
                     max: 4
                 }
+
                 SplineSeries {
                     id: temperatureSeries
                     axisX: tempAxisXTime
@@ -405,23 +438,37 @@ ApplicationWindow {
                 legend.visible: false
                 backgroundColor: "transparent"
                 plotAreaColor: "white"
-                //anchors.fill: parent
                 width: parent.width * 0.5
                 height: parent.height
                 antialiasing: true
 
-                SplineSeries {
-                    id: precitipationSeries
-                    //name: "SplineSeries"
-                    XYPoint { x: 0; y: 0.0 }
-                    XYPoint { x: 1.1; y: 3.2 }
-                    XYPoint { x: 1.9; y: 2.4 }
+                DateTimeAxis{
+                    id: precAxisXTime
+                    format: "hh:00"
+                    min: fullHourPlusX(0)
+                    tickCount: 8
+                    max: fullHourPlusX(7)
                 }
-                /*ValueAxis {
-                        id: yAxis
-                        min: 0
-                        max: 5
-                    }*/
+
+                ValueAxis {
+                    id: precAxisY
+                    min: 0.0
+                    max: 4
+                }
+
+                AreaSeries {
+                    //id: precitipationSeries
+                    axisX: precAxisXTime
+                    axisY: precAxisY
+                    upperSeries: LineSeries {
+                        id: precitipationSeries}
+
+                    //axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014"] }
+                    //name: "SplineSeries"
+                    //XYPoint { x: 0; y: 0.0 }
+                    //XYPoint { x: 1.1; y: 3.2 }
+                    //XYPoint { x: 1.9; y: 2.4 }
+                }
             }
 
         }

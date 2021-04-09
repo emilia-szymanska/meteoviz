@@ -93,8 +93,13 @@ void AppManager::initWeatherConnections(QObject *qObjectWindow)
    QObject::connect(this->_weatherMngr, SIGNAL(setFourDayForecast(QVariant)),
                            this->_window, SLOT(setFourWeatherForecast(QVariant)));
 
-   QObject::connect(this->_weatherMngr, SIGNAL(setGraphForecast(QVariant)),
+   QObject::connect(this->_weatherMngr, SIGNAL(setGraphTempForecast(QVariant)),
                            this->_window, SLOT(updateTemperatureSeries(QVariant)));
 
+   //QObject::connect(this->_weatherMngr, SIGNAL(setGraphPrecForecast(QVariant)),
+   //                        this->_window, SLOT(updatePrecitipationSeries(QVariant)));
+
+   QObject::connect(this->_weatherMngr, SIGNAL(setGraphForecast(QVariant,QVariant)),
+                           this->_window, SLOT(updateSeries(QVariant,QVariant)));
 
 }

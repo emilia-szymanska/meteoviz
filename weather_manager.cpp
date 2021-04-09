@@ -75,20 +75,27 @@ void WeatherManager::callGraphForecast()
 
 void WeatherManager::sendGraphForecast()
 {
-    QList<QVariant> list;
-   // QVector<double> temperature = _graphForecast["temperature"].data;
-   // QVector<double> precitipation = _graphForecast["precitipation"].data;
+    QList<QVariant> listTemp;
+    QList<QVariant> listPrec;
+    /*QVector<double> temperature = _graphForecast["temperature"].data;
+    QVector<double> precitipation = _graphForecast["precitipation"].data;
 
-    double x[] = {7.06, 6.03, 5.22, 4.72, 4.52, 4.23, 3.85, 3.47};
-    /*
+
+
     for(int i = 0; i < temperature.size(); i++){
-        list.append(temperature[i]);
+        listTemp.append(temperature[i]);
+        listPrec.append(precitipation[i]);
     }*/
 
+    double x[] = {7.06, 6.03, 5.22, 4.72, 4.52, 4.23, 3.85, 3.47};
+    double y[] = {0.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0};
     for(int i = 0; i < 8; i++){
-        list.append(x[i]);
+        listTemp.append(x[i]);
+        listPrec.append(y[i]);
     }
 
-    qDebug() << list;
-    emit setGraphForecast(list);
+    emit setGraphForecast(listTemp, listPrec);
+    //qDebug() << list;
+    //emit setGraphTempForecast(listTemp);
+    //emit setGraphPrecForecast(listPrec);
 }
