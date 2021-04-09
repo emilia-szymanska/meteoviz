@@ -130,8 +130,6 @@ ApplicationWindow {
     function updateSeries(listTemp, listPrec){
         var minTemp = 100
         var maxTemp = -100
-        var minPrec = 100
-        var maxPrec = -100
 
         temperatureSeries.removePoints(0, listTemp.length)
         for(let i = 0; i < listTemp.length; i++)
@@ -144,21 +142,32 @@ ApplicationWindow {
         tempAxisY.min = minTemp-1
         tempAxisY.max = maxTemp+1
 
-        precitipationSeries.removePoints(0, listPrec.length)
+        /*precitipationSeries.removePoints(0, listPrec.length)
         for(let j = 0; j < listPrec.length; j++)
         {
-            if(minPrec > listPrec[j]) minPrec = listPrec[j]
             if(maxPrec < listPrec[j]) maxPrec = listPrec[j]
 
             precitipationSeries.insert(j, fullHourPlusX(j), listPrec[j])
-        }
-        console.log(listTemp)
-        console.log(listPrec);
+        }*/
+
+        barSetData.remove(0, listPrec.length)
+        barSetData.values = listPrec
+
+        //console.log(listTemp)
+        //console.log(listPrec);
         //precitipationSeries.insert(0, "2014", [0.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0]);
         //precitipationSeries.insert(1, "hmmm2", listPrec);
-        if(minPrec <= 1) precAxisY.min = minPrec
-        else precAxisY.min = minPrec-1
-        precAxisY.max = maxPrec+1
+
+        precAxisY.max = Math.max.apply(Math, listPrec)+3
+    }
+
+    function hourCategories(){
+        let list = [];
+        for(let i = 0; i < 8; i++){
+            list.push(Qt.formatDateTime(fullHourPlusX(i), "hh:00"))
+        }
+        console.log(list)
+        return list;
     }
 
     id: weatherWindow
@@ -476,13 +485,13 @@ ApplicationWindow {
 
                 ValueAxis {
                     id: precAxisY
-                    min: 0.0
+                    min: 0
                     max: 4
                     labelFormat: "%d mm"
                     labelsFont.bold: true
                 }
 
-                AreaSeries {
+                /*AreaSeries {
                     //id: precitipationSeries
                     axisX: precAxisXTime
                     axisY: precAxisY
@@ -491,7 +500,22 @@ ApplicationWindow {
 
                     //axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014"] }
 
-                }
+                }*/
+                BarCategoryAxis {
+                    id: barCategories
+                    categories: hourCategories()/*["2007", "2008", "2009", "2010", "2011", "2012" ]*/ }
+
+                BarSeries {
+                        id: precitipationSeries
+                        axisX: barCategories
+                        axisY: precAxisY
+                        barWidth: 1
+                        BarSet {
+                            //label: "Bob";
+                            id: barSetData
+                            values: [2, 2, 3, 4, 5, 6]
+                        }
+                    }
             }
         }
 
