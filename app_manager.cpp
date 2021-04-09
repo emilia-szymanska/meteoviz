@@ -50,7 +50,9 @@ void AppManager::changeWindow()
         QObject *qObjectWindow = _engine->rootObjects().value(1);
         this->initWeatherConnections(qObjectWindow);
         this->_weatherMngr->setCity(this->_citychoiceMngr->selectedCity());
-        this->_weatherMngr->callFourDayForecast();
+        //this->_weatherMngr->callFourDayForecast();
+        //this->_weatherMngr->callGraphForecast();
+        this->_weatherMngr->sendGraphForecast();
 
     }
 
@@ -90,6 +92,9 @@ void AppManager::initWeatherConnections(QObject *qObjectWindow)
 
    QObject::connect(this->_weatherMngr, SIGNAL(setFourDayForecast(QVariant)),
                            this->_window, SLOT(setFourWeatherForecast(QVariant)));
+
+   QObject::connect(this->_weatherMngr, SIGNAL(setGraphForecast(QVariant)),
+                           this->_window, SLOT(updateTemperatureSeries(QVariant)));
 
 
 }

@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <QString>
+#include <QVector>
 
 struct CoordsWeatherData
 {
@@ -28,14 +29,19 @@ struct CityCoords
 
 struct DailyForecast
 {
-    double temperature = 0;
-    double pressure = 0;
-    double windSpeed = 0;
+    int temperature = 0;
+    int pressure = 0;
+    int windSpeed = 0;
     QString windDirection = "";
-    double precipitation = 0;
-    double humidity = 0;
+    int precipitation = 0;
+    int humidity = 0;
     int weatherCode = 0;
 
+};
+
+struct GraphData
+{
+    QVector<double> data;
 };
 
 /*std::ostream& operator << (std::ostream &strm, const GeneralCityData &data)
