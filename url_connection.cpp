@@ -142,47 +142,49 @@ void UrlConnection::readFourDayForecast(QString content, QMap<QString, DailyFore
     QJsonObject firstEl = timelines.at(0).toObject();
     QJsonArray intervals = firstEl["intervals"].toArray();
 
-    QJsonObject firstDay = intervals.at(0).toObject();
+    for(int i = 0; i < 4; i++)
+    {
+        QJsonObject chosenDay = intervals.at(i).toObject();
 
-    /*QJsonObject secondDay = intervals.at(1).toObject();
-    QJsonObject thirdDay = intervals.at(2).toObject();
-    QJsonObject fourthDay = intervals.at(3).toObject();*/
+        /*QJsonObject secondDay = intervals.at(1).toObject();
+        QJsonObject thirdDay = intervals.at(2).toObject();
+        QJsonObject fourthDay = intervals.at(3).toObject();*/
 
-    QJsonObject values = firstDay["values"].toObject();
+        QJsonObject values = chosenDay["values"].toObject();
 
-    double temperature = values["temperature"].toDouble();
-    double humidity = values["humidity"].toDouble();
-    double windSpeed = values["windSpeed"].toDouble();
-    double pressure = values["pressureSurfaceLevel"].toDouble();
-    double precipitation = values["precipitationIntensity"].toDouble();
-    double windDir = values["windDirection"].toDouble();
-    int weatherCode = values["weatherCode"].toInt();
-    QString windDirection;
+        double temperature   = values["temperature"].toDouble();
+        double humidity      = values["humidity"].toDouble();
+        double windSpeed     = values["windSpeed"].toDouble();
+        double pressure      = values["pressureSurfaceLevel"].toDouble();
+        double precipitation = values["precipitationIntensity"].toDouble();
+        double windDir       = values["windDirection"].toDouble();
+        int weatherCode      = values["weatherCode"].toInt();
+        QString windDirection;
 
-    if(windDir >= 345 or windDir <= 15) windDirection = "N";
-    if(windDir > 15 and windDir < 75) windDirection = "NE";
-    if(windDir >= 75 and windDir <= 105) windDirection = "E";
-    if(windDir > 105 and windDir < 165) windDirection = "SE";
-    if(windDir >= 165 and windDir <= 195) windDirection = "S";
-    if(windDir > 195 and windDir < 225) windDirection = "SW";
-    if(windDir >= 225 and windDir <= 285) windDirection = "W";
-    if(windDir > 285 and windDir < 345) windDirection = "NW";
+        if(windDir >= 345 or windDir <= 15) windDirection = "N";
+        if(windDir > 15 and windDir < 75) windDirection = "NE";
+        if(windDir >= 75 and windDir <= 105) windDirection = "E";
+        if(windDir > 105 and windDir < 165) windDirection = "SE";
+        if(windDir >= 165 and windDir <= 195) windDirection = "S";
+        if(windDir > 195 and windDir < 225) windDirection = "SW";
+        if(windDir >= 225 and windDir <= 285) windDirection = "W";
+        if(windDir > 285 and windDir < 345) windDirection = "NW";
 
-    DailyForecast tmp;
-    tmp.temperature = temperature;
-    tmp.pressure = pressure;
-    tmp.humidity = humidity;
-    tmp.precipitation = precipitation;
-    tmp.windSpeed = windSpeed;
-    tmp.weatherCode = weatherCode;
-    tmp.windDirection = windDirection;
+        DailyForecast tmp;
+        tmp.temperature = temperature;
+        tmp.pressure = pressure;
+        tmp.humidity = humidity;
+        tmp.precipitation = precipitation;
+        tmp.windSpeed = windSpeed;
+        tmp.weatherCode = weatherCode;
+        tmp.windDirection = windDirection;
 
-    fourDayForecast["first"] = tmp;
+        QString nr = QString::number(i);
+        QString key = "day" + nr;
+        fourDayForecast[key] = tmp;
 
-    qDebug() << temperature;
-    qDebug() << pressure;
-    qDebug() << windDirection;
-    qDebug() << "===================";
+    }
+
     //return weatherCode;
 
 }

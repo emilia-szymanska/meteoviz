@@ -22,6 +22,73 @@ ApplicationWindow {
         return currentDate
     }
 
+    function setFourWeatherForecast(list){
+        //console.log(list)
+        var elements = [0.0, 0.0, 0.0, "", 0.0, 0.0, 0] // temp, press, windSpeed, windDir, precit, hum, code
+        var j = 0;
+
+        for(var i in list){
+            elements[i%7] = list[i]
+
+            if (i%7 == 6){
+                console.log(j)
+                console.log(elements)
+
+                if (j===0){
+                    textTemperature.text = elements[0] + "\xB0C";
+                    textPressure.text = elements[1] + "hPa";
+                    textWindVel.text = elements[2] + "m/s";
+                    textWindDirection.text = elements[3];
+                    textRain.text = elements[4] + "mm/h";
+                    textHumidity.text = elements[5] + "%";
+                    var path = returnSourcePath(elements[6]);
+                    imageState.source = path;
+                }
+                if(j===1){
+                    textTemperature1.text = elements[0] + "\xB0C";
+                    textPressure1.text = elements[1] + "hPa";
+                    textWindVel1.text = elements[2] + "m/s";
+                    textWindDirection1.text = elements[3];
+                    textRain1.text = elements[4] + "mm/h";
+                    textHumidity1.text = elements[5] + "%";
+                    var path1 = returnSourcePath(elements[6]);
+                    imageState1.source = path;
+                }
+                if(j===2){
+                    textTemperature2.text = elements[0] + "\xB0C";
+                    textPressure2.text = elements[1] + "hPa";
+                    textWindVel2.text = elements[2] + "m/s";
+                    textWindDirection2.text = elements[3];
+                    textRain2.text = elements[4] + "mm/h";
+                    textHumidity2.text = elements[5] + "%";
+                    var path2 = returnSourcePath(elements[6]);
+                    imageState2.source = path;
+                }
+                if(j===3){
+                    textTemperature3.text = elements[0] + "\xB0C";
+                    textPressure3.text = elements[1] + "hPa";
+                    textWindVel3.text = elements[2] + "m/s";
+                    textWindDirection3.text = elements[3];
+                    textRain3.text = elements[4] + "mm/h";
+                    textHumidity3.text = elements[5] + "%";
+                    var path3 = returnSourcePath(elements[6]);
+                    imageState3.source = path;
+                }
+
+                j++;
+               }
+            }
+        }
+
+    function returnSourcePath(code)
+    {
+        switch(code){
+            case 0: return  "img/sun.png";
+            case 1101: return "img/example.jpg";
+            default: return "img/firework_transparent.gif";
+        }
+    }
+
     id: weatherWindow
     objectName: "weatherWindow"
     width: 1200
@@ -339,6 +406,7 @@ ApplicationWindow {
                     height: parent.height * 0.33
 
                     Image{
+                        id: imageState1
                         width: parent.width * 0.4
                         height: parent.height
                         source: "img/sun.png"
@@ -492,6 +560,7 @@ ApplicationWindow {
                     height: parent.height * 0.33
 
                     Image{
+                        id: imageState2
                         width: parent.width * 0.4
                         height: parent.height
                         source: "img/sun.png"
@@ -645,6 +714,7 @@ ApplicationWindow {
                     height: parent.height * 0.33
 
                     Image{
+                        id: imageState3
                         width: parent.width * 0.4
                         height: parent.height
                         source: "img/sun.png"

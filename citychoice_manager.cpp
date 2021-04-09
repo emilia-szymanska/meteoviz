@@ -26,6 +26,7 @@ void CitychoiceManager::initCities(QString fileName)
     {
         QString line = in.readLine();
         QStringList fields = line.split(" ");
+        //qDebug() << fields;
         QString city = fields[0];
         city.replace("_", " ");
         _availableCities.append(city);
@@ -33,6 +34,8 @@ void CitychoiceManager::initCities(QString fileName)
                 //_cities[city].geostring = line;
         _cities[city].latitude = fields[2].toDouble();
         _cities[city].longitude = fields[1].toDouble();
+        //qDebug() << _cities[city].latitude;
+        //qDebug() << _cities[city].longitude;
 
         /*
         QString line = in.readLine();
@@ -101,6 +104,9 @@ void CitychoiceManager::initMapItems()
 
 QPair<QString, CityCoords> CitychoiceManager::selectedCity()
 {
+    qDebug() << _selectedCity.first;
+    qDebug() << _selectedCity.second.latitude;
+    qDebug() << _selectedCity.second.longitude;
     return _selectedCity;
 }
 
@@ -117,6 +123,8 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
         {
             lat = cityData.latitude;
             lon = cityData.longitude;
+            this->_selectedCity.second.latitude = lat;
+            this->_selectedCity.second.longitude = lon;
         }
         /*else
         {
@@ -153,8 +161,8 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
             _cities[_cityName].longitude = lon;
 
         }*/
-    qDebug() << lat;
-    qDebug() << lon;
+    //qDebug() << lat;
+    //qDebug() << lon;
     emit sendPinPosition(lat, lon);
     }
 }

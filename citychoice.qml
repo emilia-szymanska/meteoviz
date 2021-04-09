@@ -30,7 +30,7 @@ ApplicationWindow {
     }
 
     function setMapItems(list){
-        console.log(list)
+        //console.log(list)
         var elements = [0.0, 0.0, 0] // lat, lon, code
 
         for(var i in list){

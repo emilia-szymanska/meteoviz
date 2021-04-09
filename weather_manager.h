@@ -35,9 +35,11 @@ class WeatherManager : public QObject
         explicit WeatherManager(QObject *parent = nullptr);
         void setCity(QPair<QString, CityCoords> city);
         void callFourDayForecast();
+        void sendFourDayForecast();
 
     signals:
         void setCityLabel(QVariant cityName);
+        void setFourDayForecast(QVariant list);
 };
 
 #endif // WEATHERMANAGER_H

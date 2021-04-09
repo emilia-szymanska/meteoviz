@@ -88,4 +88,8 @@ void AppManager::initWeatherConnections(QObject *qObjectWindow)
    QObject::connect(this->_weatherMngr, SIGNAL(setCityLabel(QVariant)),
                             this->_window, SLOT(setCityLabel(QVariant)));
 
+   QObject::connect(this->_weatherMngr, SIGNAL(setFourDayForecast(QVariant)),
+                           this->_window, SLOT(setFourWeatherForecast(QVariant)));
+
+
 }

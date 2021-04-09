@@ -7,6 +7,7 @@ WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
 }
 
 
+
 void WeatherManager::setCity(QPair<QString, CityCoords> city)
 {
     _selectedCity = city;
@@ -35,9 +36,33 @@ void WeatherManager::setCity(QPair<QString, CityCoords> city)
 
 void WeatherManager::callFourDayForecast()
 {
-    QMap<QString, DailyForecast> fourDayForecast;
-    _urlCon.callDailyWeather(_selectedCity.second, fourDayForecast);
+    //QMap<QString, DailyForecast> fourDayForecast;
+    _urlCon.callDailyWeather(_selectedCity.second, _fourDayWeather);
+    sendFourDayForecast();
 }
 
-//UrlConnection urlCon = UrlConnection("https://data.climacell.co/");
-//urlCon.callGeneralWeather(_generalCities);
+void WeatherManager::sendFourDayForecast()
+{
+    QList<QVariant> list;
+    foreach(const QString& key, _fourDayWeather.keys()){
+        QVariant temperature = _fourDayWeather[key].temperature;
+        QVariant pressure  = _fourDayWeather[key].pressure;
+        QVariant windSpeed = _fourDayWeather[key].windSpeed;
+        QVariant windDirection = _fourDayWeather[key].windDirection;
+        QVariant precitipation = _fourDayWeather[key].precipitation;
+        QVariant humidity = _fourDayWeather[key].humidity;
+        QVariant weatherCode = _fourDayWeather[key].weatherCode;
+        QList <QVariant> tempList;
+        tempList.append(temperature);
+        tempList.append(pressure);
+        tempList.append(windSpeed);
+        tempList.append(windDirection);
+        tempList.append(precitipation);
+        tempList.append(humidity);
+        tempList.append(weatherCode);
+        list.append(tempList);
+    }
+
+    emit setFourDayForecast(list);
+}
+
