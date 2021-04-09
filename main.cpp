@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 
     AppManager appManager(&engine, &citychoiceManager, &weatherManager);
     engine.rootContext()->setContextProperty("appManager", &appManager);
+    QObject::connect(&engine, &QQmlApplicationEngine::quit, &QApplication::quit);
 
     return app.exec();
 }

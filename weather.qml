@@ -171,7 +171,6 @@ ApplicationWindow {
     title: qsTr("MeteoViz")
 
 
-
     Column{
         anchors {
             left: parent.left
@@ -376,7 +375,7 @@ ApplicationWindow {
 
                 Button{
                     width: parent.width
-                    height: parent.height * 0.5
+                    height: parent.height * 0.33
                     text: qsTr("Refresh")
                     highlighted: true
                     enabled: true
@@ -385,13 +384,22 @@ ApplicationWindow {
 
                 Button{
                     width: parent.width
-                    height: parent.height * 0.5
+                    height: parent.height * 0.33
                     text: qsTr("BACK")
                     highlighted: true
                     enabled: true
                     onClicked: {
                         appManager.changeWindow()
                     }
+                }
+
+                Button{
+                    width: parent.width
+                    height: parent.height * 0.33
+                    text: qsTr("CLOSE")
+                    highlighted: true
+                    enabled: true
+                    onClicked: Qt.callLater(Qt.quit)
                 }
             }
 

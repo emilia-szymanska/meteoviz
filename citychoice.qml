@@ -129,9 +129,9 @@ ApplicationWindow {
             enabled: highlighted == true ? true : false
             width: parent.width * 0.12
             height: parent.height
-            anchors {
+            /*anchors {
                 leftMargin: parent.width * 0.1
-            }
+            }*/
             onClicked: {
                 if(comboBoxCities.currentText == "Custom"){
                    var coordsFormat = marker2.coordinate.latitude + "," + marker2.coordinate.longitude
@@ -145,6 +145,30 @@ ApplicationWindow {
                 //ld.source="weather.qml"
             }
         }
+
+        Rectangle{
+            width: parent.width * 0.4
+            height: parent.height
+            color: "transparent"
+        }
+
+
+
+    }
+
+    Button{
+        width: parent.width  * 0.15
+        height: parent.height * 0.05
+        text: qsTr("CLOSE")
+        anchors {
+            rightMargin: 30
+            right: parent.right
+            top: parent.top
+            topMargin: 25
+        }
+        highlighted: true
+        enabled: true
+        onClicked: Qt.callLater(Qt.quit)
     }
 
     Plugin {
