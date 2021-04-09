@@ -116,6 +116,54 @@ void UrlConnection::callDailyWeather(CityCoords cityData, QMap<QString, DailyFor
 
 }
 
+
+void UrlConnection::callGraphWeather(CityCoords city, QMap<QString, GraphData> & graphData)
+{
+    ////// APIKEY ///////////
+    QFile file("D:/qt_projects/meteoviz/apikey.txt");
+    if(!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(0, "error", file.errorString());
+    }
+    QTextStream in(&file);
+    QString apikey = in.readLine();
+    file.close();
+
+    QNetworkAccessManager manager;
+
+    QString lat = QString::number(city.latitude);
+    QString lon = QString::number(city.longitude);
+    /////////
+    ///ADD TIME
+    ///
+
+    QDateTime currentDate = QDateTime::currentDateTime();
+    //currentDate = currentDate.addSecs(60*60);
+    QDateTime futureDate = currentDate.addSecs(7*60*60);
+    QString formatDay = "yyyy-MM-dd";
+    QString formatTime = "hh:00:00";
+    QString day = currentDate.toString(formatDay);
+    QString futureDay = futureDate.toString(formatDay);
+    QString time = currentDate.toString(formatTime);
+    QString futureTime = futureDate.toString(formatTime);
+    //2021-03-28T15:00:00Z
+
+    QString url = this->_urlAddress + "v4/timelines?location=" + lat + "," + lon +
+                    "&fields=temperature,precipitationIntensity&" +
+                    "timesteps=1h&" + "startTime=" + day + "T" + time + "Z" + "&endTime=" + futureDay + "T" + futureTime + "Z" +
+                    "&units=metric&apikey=" + apikey;
+
+    QNetworkReply *response = manager.get(QNetworkRequest(QUrl(url)));
+
+    QEventLoop event;
+    QObject::connect(response, SIGNAL(finished()), &event, SLOT(quit()));
+    event.exec();
+
+    QString content = response->readAll();
+    qDebug() << content;
+    readGraphWeather(content, graphData);
+}
+
+
 int UrlConnection::readWeathercode(QString content)
 {
     QJsonDocument doc = QJsonDocument::fromJson(content.toUtf8());
@@ -152,13 +200,13 @@ void UrlConnection::readFourDayForecast(QString content, QMap<QString, DailyFore
 
         QJsonObject values = chosenDay["values"].toObject();
 
-        double temperature   = values["temperature"].toDouble();
-        double humidity      = values["humidity"].toDouble();
-        double windSpeed     = values["windSpeed"].toDouble();
-        double pressure      = values["pressureSurfaceLevel"].toDouble();
-        double precipitation = values["precipitationIntensity"].toDouble();
-        double windDir       = values["windDirection"].toDouble();
-        int weatherCode      = values["weatherCode"].toInt();
+        int temperature   = values["temperature"].toInt();
+        int humidity      = values["humidity"].toInt();
+        int windSpeed     = values["windSpeed"].toInt();
+        int pressure      = values["pressureSurfaceLevel"].toInt();
+        int precipitation = values["precipitationIntensity"].toInt();
+        int windDir       = values["windDirection"].toInt();
+        int weatherCode   = values["weatherCode"].toInt();
         QString windDirection;
 
         if(windDir >= 345 or windDir <= 15) windDirection = "N";
@@ -186,5 +234,39 @@ void UrlConnection::readFourDayForecast(QString content, QMap<QString, DailyFore
     }
 
     //return weatherCode;
+
+}
+
+
+void UrlConnection::readGraphWeather(QString content, QMap<QString, GraphData> & graphData)
+{
+    GraphData precitipationData;
+    GraphData temperatureData;
+
+    QJsonDocument doc = QJsonDocument::fromJson(content.toUtf8());
+    QJsonObject jsonObject = doc.object();
+    QJsonObject data = jsonObject["data"].toObject();
+    QJsonArray timelines = data["timelines"].toArray();
+    QJsonObject firstEl = timelines.at(0).toObject();
+    QJsonArray intervals = firstEl["intervals"].toArray();
+
+    for(auto it = intervals.begin(); it != intervals.end(); ++it)
+    {
+        QJsonObject chosenTime = it->toObject();
+        //QJsonObject chosenTime = intervals.at(i).toObject();
+        QJsonObject values = chosenTime["values"].toObject();
+
+        double temperature   = values["temperature"].toDouble();
+        double precipitation = values["precipitationIntensity"].toDouble();
+
+        temperatureData.data.append(temperature);
+        precitipationData.data.append(precipitation);
+        //qDebug() << temperature;
+        //qDebug() << precipitation;
+    }
+
+    graphData["temperature"] = temperatureData;
+    graphData["precitipation"] = precitipationData;
+
 
 }

@@ -25,8 +25,11 @@ class UrlConnection
         UrlConnection(QString address);
         void callGeneralWeather(QMap<QString, CoordsWeatherData> & generalWeatherMap);
         void callDailyWeather(CityCoords city, QMap<QString, DailyForecast> & fourDayForecast);
+        void callGraphWeather(CityCoords city, QMap<QString, GraphData> & graphData);
         int readWeathercode(QString content);
         void readFourDayForecast(QString content, QMap<QString, DailyForecast> & fourDayForecast);
+        void readGraphWeather(QString content, QMap<QString, GraphData> & graphData);
+
 };
 
 #endif // URL_CONNECTION_H
