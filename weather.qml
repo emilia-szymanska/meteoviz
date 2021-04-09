@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.12
 import QtCharts 2.15
 
 ApplicationWindow {
+
     function setCityLabel(cityName)
     {
         textChosenCity.text = cityName
@@ -14,13 +15,21 @@ ApplicationWindow {
 
     function datePlusX(value)
     {
-        console.log(value)
         var currentDate = new Date();
-        console.log(currentDate)
         currentDate.setDate(currentDate.getDate() + value);
-        console.log(currentDate)
         return currentDate
     }
+
+
+    function fullHourPlusX(value){
+        var date = new Date();
+        date.setHours(date.getHours() + value);
+        date.setMinutes(0, 0, 0)
+        console.log(date)
+        return date
+    }
+
+
 
     function setFourWeatherForecast(list){
         //console.log(list)
@@ -34,7 +43,7 @@ ApplicationWindow {
                 console.log(j)
                 console.log(elements)
 
-                if (j===0){
+                if(j===0){
                     textTemperature.text = elements[0] + "\xB0C";
                     textPressure.text = elements[1] + "hPa";
                     textWindVel.text = elements[2] + "m/s";
@@ -87,6 +96,34 @@ ApplicationWindow {
             case 1101: return "img/example.jpg";
             default: return "img/firework_transparent.gif";
         }
+    }
+
+    function updateTemperatureSeries(list){
+        var min = 100
+        var max = -100
+        console.log(list)
+        //min = 0
+        //max = 20
+        /*temperatureSeries.insert(0, fullHourPlusX(0), list[0])
+        temperatureSeries.insert(1, fullHourPlusX(2), list[1])
+        temperatureSeries.insert(2, fullHourPlusX(2), list[2])
+        temperatureSeries.insert(3, fullHourPlusX(3), list[3])
+        temperatureSeries.insert(4, fullHourPlusX(4), list[4])
+        temperatureSeries.insert(5, fullHourPlusX(5), list[5])
+        temperatureSeries.insert(6, fullHourPlusX(6), list[6])
+        temperatureSeries.insert(7, fullHourPlusX(7), list[7])
+*/
+        console.log("=======================")
+        for(let i = 0; i < list.length; i++)
+        {
+            if(min > list[i]) min = list[i]
+            if(max < list[i]) max = list[i]
+
+            temperatureSeries.insert(i, fullHourPlusX(i), list[i])
+        }
+        tempAxisY.min = min-1
+        tempAxisY.max = max+1
+
     }
 
     id: weatherWindow
@@ -308,6 +345,7 @@ ApplicationWindow {
                     text: qsTr("Refresh")
                     highlighted: true
                     enabled: true
+                    //onClicked: updateTemperatureSeries()
                 }
 
                 Button{
@@ -318,9 +356,6 @@ ApplicationWindow {
                     enabled: true
                     onClicked: {
                         appManager.changeWindow()
-                        //weatherWindow.close()
-                        //weatherWindow.visible = false
-                        //ld.source="citychoice.qml"
                     }
                 }
             }
@@ -333,29 +368,36 @@ ApplicationWindow {
 
             ChartView {
                 title: "Temperature"
+                id: temperatureChart
                 legend.visible: false
                 backgroundColor: "transparent"
                 plotAreaColor: "white"
-                //anchors.fill: parent
                 width: parent.width * 0.5
                 height: parent.height
                 antialiasing: true
 
-                SplineSeries {
-                    //name: "SplineSeries"
-                    XYPoint { x: 0; y: 0.0 }
-                    XYPoint { x: 1.1; y: 3.2 }
-                    XYPoint { x: 1.9; y: 2.4 }
-                    XYPoint { x: 2.1; y: 2.1 }
-                    XYPoint { x: 2.9; y: 2.6 }
-                    XYPoint { x: 3.2; y: 2.3 }
-                    XYPoint { x: 4.1; y: 3.1 }
+                DateTimeAxis{
+                    id: tempAxisXTime
+                    format: "hh:00"
+                    min: fullHourPlusX(0)
+                    tickCount: 8
+                    max: fullHourPlusX(7)
                 }
-                /*ValueAxis {
-                        id: xAxis
-                        min: 0
-                        max: 5
-                    }*/
+
+                ValueAxis {
+                    id: tempAxisY
+                    min: 0.0
+                    max: 4
+                }
+                SplineSeries {
+                    id: temperatureSeries
+                    axisX: tempAxisXTime
+                    axisY: tempAxisY
+                    //name: "SplineSeries"
+                    //XYPoint { x: 1; y: 0.0 }
+                    //XYPoint { x: 2; y: 3.2 }
+                    //XYPoint { x: 3; y: 2.4 }
+                }
             }
 
             ChartView {
@@ -369,14 +411,11 @@ ApplicationWindow {
                 antialiasing: true
 
                 SplineSeries {
+                    id: precitipationSeries
                     //name: "SplineSeries"
                     XYPoint { x: 0; y: 0.0 }
                     XYPoint { x: 1.1; y: 3.2 }
                     XYPoint { x: 1.9; y: 2.4 }
-                    XYPoint { x: 2.1; y: 2.1 }
-                    XYPoint { x: 2.9; y: 2.6 }
-                    XYPoint { x: 3.2; y: 2.3 }
-                    XYPoint { x: 4.1; y: 3.1 }
                 }
                 /*ValueAxis {
                         id: yAxis

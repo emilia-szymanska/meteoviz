@@ -29,6 +29,7 @@ class WeatherManager : public QObject
         //CityCoords _cityData;
         QPair<QString, CityCoords> _selectedCity;
         QMap<QString, DailyForecast> _fourDayWeather;
+        QMap<QString, GraphData> _graphForecast;
         UrlConnection _urlCon;
 
     public:
@@ -36,10 +37,13 @@ class WeatherManager : public QObject
         void setCity(QPair<QString, CityCoords> city);
         void callFourDayForecast();
         void sendFourDayForecast();
+        void callGraphForecast();
+        void sendGraphForecast();
 
     signals:
         void setCityLabel(QVariant cityName);
         void setFourDayForecast(QVariant list);
+        void setGraphForecast(QVariant list);
 };
 
 #endif // WEATHERMANAGER_H
