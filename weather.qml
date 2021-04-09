@@ -3,10 +3,12 @@ import QtQml 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtPositioning 5.12
-import QtQuick.Layouts 1.12
+//import QtQuick.Layouts 1.12
 import QtCharts 2.15
 
 ApplicationWindow {
+
+    signal refresh()
 
     function setCityLabel(cityName)
     {
@@ -27,7 +29,6 @@ ApplicationWindow {
         date.setMinutes(0, 0, 0)
         return date
     }
-
 
     function setFourWeatherForecast(list){
         //console.log(list)
@@ -132,6 +133,7 @@ ApplicationWindow {
         var minPrec = 100
         var maxPrec = -100
 
+        temperatureSeries.removePoints(0, listTemp.length)
         for(let i = 0; i < listTemp.length; i++)
         {
             if(minTemp > listTemp[i]) minTemp = listTemp[i]
@@ -142,7 +144,7 @@ ApplicationWindow {
         tempAxisY.min = minTemp-1
         tempAxisY.max = maxTemp+1
 
-
+        precitipationSeries.removePoints(0, listPrec.length)
         for(let j = 0; j < listPrec.length; j++)
         {
             if(minPrec > listPrec[j]) minPrec = listPrec[j]
@@ -150,9 +152,10 @@ ApplicationWindow {
 
             precitipationSeries.insert(j, fullHourPlusX(j), listPrec[j])
         }
+        console.log(listTemp)
         console.log(listPrec);
-//precitipationSeries.insert(0, "2014", [0.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0]);
-//precitipationSeries.insert(1, "hmmm2", listPrec);
+        //precitipationSeries.insert(0, "2014", [0.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0]);
+        //precitipationSeries.insert(1, "hmmm2", listPrec);
         if(minPrec <= 1) precAxisY.min = minPrec
         else precAxisY.min = minPrec-1
         precAxisY.max = maxPrec+1
@@ -377,7 +380,7 @@ ApplicationWindow {
                     text: qsTr("Refresh")
                     highlighted: true
                     enabled: true
-                    //onClicked: updateTemperatureSeries()
+                    onClicked: refresh()
                 }
 
                 Button{
@@ -407,6 +410,9 @@ ApplicationWindow {
                 width: parent.width * 0.5
                 height: parent.height
                 antialiasing: true
+                titleFont.family: "Helvetica"
+                titleFont.bold: true
+                titleFont.capitalization: Font.AllUppercase
 
                 DateTimeAxis{
                     id: tempAxisXTime
@@ -414,18 +420,23 @@ ApplicationWindow {
                     min: fullHourPlusX(0)
                     tickCount: 8
                     max: fullHourPlusX(7)
+                    labelsFont.bold: true
+
                 }
 
                 ValueAxis {
                     id: tempAxisY
                     min: 0.0
                     max: 4
+                    labelFormat: "%d&deg;C"
+                    labelsFont.bold: true
                 }
 
                 SplineSeries {
                     id: temperatureSeries
                     axisX: tempAxisXTime
                     axisY: tempAxisY
+                    color: "red"
                     //name: "SplineSeries"
                     //XYPoint { x: 1; y: 0.0 }
                     //XYPoint { x: 2; y: 3.2 }
@@ -441,6 +452,9 @@ ApplicationWindow {
                 width: parent.width * 0.5
                 height: parent.height
                 antialiasing: true
+                titleFont.family: "Helvetica"
+                titleFont.bold: true
+                titleFont.capitalization: Font.AllUppercase
 
                 DateTimeAxis{
                     id: precAxisXTime
@@ -448,12 +462,16 @@ ApplicationWindow {
                     min: fullHourPlusX(0)
                     tickCount: 8
                     max: fullHourPlusX(7)
+                    labelsFont.bold: true
+
                 }
 
                 ValueAxis {
                     id: precAxisY
                     min: 0.0
                     max: 4
+                    labelFormat: "%d mm"
+                    labelsFont.bold: true
                 }
 
                 AreaSeries {
@@ -464,13 +482,9 @@ ApplicationWindow {
                         id: precitipationSeries}
 
                     //axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014"] }
-                    //name: "SplineSeries"
-                    //XYPoint { x: 0; y: 0.0 }
-                    //XYPoint { x: 1.1; y: 3.2 }
-                    //XYPoint { x: 1.9; y: 2.4 }
+
                 }
             }
-
         }
 
         Row{
@@ -502,7 +516,7 @@ ApplicationWindow {
                         id: textDate1
                         width: parent.width * 0.6
                         height: parent.height
-                        text: /*Qt.formatDateTime(new Date() + 1, "dd.MM.yyyy")*/ Qt.formatDateTime(datePlusX(1), "dd.MM.yyyy")
+                        text: Qt.formatDateTime(datePlusX(1), "dd.MM.yyyy")
                         font.pointSize: 12
                         font.bold: true
                         fontSizeMode: Text.Fit
@@ -947,9 +961,9 @@ ApplicationWindow {
         }
     }
 
-    Loader{
+    /*Loader{
         id:ld;
         anchors.fill: parent;
-    }
+    }*/
 }
 

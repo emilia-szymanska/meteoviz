@@ -46,6 +46,9 @@ class WeatherManager : public QObject
         void setGraphTempForecast(QVariant list);
         void setGraphPrecForecast(QVariant list);
         void setGraphForecast(QVariant listTemp, QVariant listPrec);
+
+    public slots:
+        void refreshRequest();
 };
 
 #endif // WEATHERMANAGER_H

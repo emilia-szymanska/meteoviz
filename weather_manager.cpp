@@ -87,8 +87,10 @@ void WeatherManager::sendGraphForecast()
         listPrec.append(precitipation[i]);
     }*/
 
-    double x[] = {7.06, 6.03, 5.22, 4.72, 4.52, 4.23, 3.85, 3.47};
-    double y[] = {0.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0};
+    double f = (double)rand() / RAND_MAX;
+
+    double x[] = {f, 6.03, 5.22, 4.72, 4.52, 4.23, 3.85, 3.47};
+    double y[] = {0.0, 1.0, f, 0.0, 3.0, 0.0, 0.0, 0.0};
     for(int i = 0; i < 8; i++){
         listTemp.append(x[i]);
         listPrec.append(y[i]);
@@ -98,4 +100,12 @@ void WeatherManager::sendGraphForecast()
     //qDebug() << list;
     //emit setGraphTempForecast(listTemp);
     //emit setGraphPrecForecast(listPrec);
+}
+
+
+void WeatherManager::refreshRequest()
+{
+    //callFourDayForecast();
+    //callGraphForecast();
+    sendGraphForecast();
 }

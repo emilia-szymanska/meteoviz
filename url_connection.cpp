@@ -200,12 +200,12 @@ void UrlConnection::readFourDayForecast(QString content, QMap<QString, DailyFore
 
         QJsonObject values = chosenDay["values"].toObject();
 
-        int temperature   = values["temperature"].toInt();
-        int humidity      = values["humidity"].toInt();
-        int windSpeed     = values["windSpeed"].toInt();
-        int pressure      = values["pressureSurfaceLevel"].toInt();
-        int precipitation = values["precipitationIntensity"].toInt();
-        int windDir       = values["windDirection"].toInt();
+        double temperature   = values["temperature"].toDouble();
+        double humidity      = values["humidity"].toDouble();
+        double windSpeed     = values["windSpeed"].toDouble();
+        double pressure      = values["pressureSurfaceLevel"].toDouble();
+        double precipitation = values["precipitationIntensity"].toDouble();
+        double windDir       = values["windDirection"].toDouble();
         int weatherCode   = values["weatherCode"].toInt();
         QString windDirection;
 

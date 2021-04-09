@@ -85,7 +85,10 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
 
 void AppManager::initWeatherConnections(QObject *qObjectWindow)
 {
-    this->_window = qobject_cast<QQuickWindow *>(qObjectWindow);
+   this->_window = qobject_cast<QQuickWindow *>(qObjectWindow);
+
+   QObject::connect(this->_window, SIGNAL(refresh()),
+                             this->_weatherMngr, SLOT(refreshRequest()));
 
    QObject::connect(this->_weatherMngr, SIGNAL(setCityLabel(QVariant)),
                             this->_window, SLOT(setCityLabel(QVariant)));
@@ -96,8 +99,6 @@ void AppManager::initWeatherConnections(QObject *qObjectWindow)
    QObject::connect(this->_weatherMngr, SIGNAL(setGraphTempForecast(QVariant)),
                            this->_window, SLOT(updateTemperatureSeries(QVariant)));
 
-   //QObject::connect(this->_weatherMngr, SIGNAL(setGraphPrecForecast(QVariant)),
-   //                        this->_window, SLOT(updatePrecitipationSeries(QVariant)));
 
    QObject::connect(this->_weatherMngr, SIGNAL(setGraphForecast(QVariant,QVariant)),
                            this->_window, SLOT(updateSeries(QVariant,QVariant)));
