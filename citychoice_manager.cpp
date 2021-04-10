@@ -1,12 +1,11 @@
 #include "citychoice_manager.h"
 
-CitychoiceManager::CitychoiceManager(QObject *parent) : QObject(parent)
+CitychoiceManager::CitychoiceManager(QString allCitiesFilepath, QString generalCitiesFilepath, UrlConnection urlCon, QObject *parent) : QObject(parent)
 {
-    initCities("D:/qt_projects/meteoviz/text_files/polish_cities.txt");
-    //initCities("D:/qt_projects/meteoviz/available_cities.txt");
-    initGeneralCities("D:/qt_projects/meteoviz/general_cities.txt");
-    UrlConnection urlCon = UrlConnection("https://data.climacell.co/");
-    urlCon.callGeneralWeather(_generalCities);
+    initCities(allCitiesFilepath);
+    initGeneralCities(generalCitiesFilepath);
+    _urlCon = urlCon;
+    _urlCon.callGeneralWeather(_generalCities);
 }
 
 
@@ -26,24 +25,13 @@ void CitychoiceManager::initCities(QString fileName)
     {
         QString line = in.readLine();
         QStringList fields = line.split(" ");
-        //qDebug() << fields;
         QString city = fields[0];
         city.replace("_", " ");
+
         _availableCities.append(city);
 
-                //_cities[city].geostring = line;
         _cities[city].latitude = fields[2].toDouble();
         _cities[city].longitude = fields[1].toDouble();
-        //qDebug() << _cities[city].latitude;
-        //qDebug() << _cities[city].longitude;
-
-        /*
-        QString line = in.readLine();
-        QStringList fields = line.split(",");
-        QString city = fields[2];
-        _availableCities.append(city);
-
-        _cities[city].geostring = line;*/
     }
 
     file.close();
@@ -57,9 +45,9 @@ void CitychoiceManager::initGeneralCities(QString fileName)
         QMessageBox::information(0, "error", file.errorString());
     }
 
-
     QTextStream in(&file);
-    while(!in.atEnd()) {
+    while(!in.atEnd())
+    {
         QString line = in.readLine();
         QStringList fields = line.split(",");
         QString city = fields[0];
@@ -85,9 +73,9 @@ void CitychoiceManager::initCitiesCombobox()
 
 void CitychoiceManager::initMapItems()
 {
-    //QList<QVariant<QVariant> > list;
     QList<QVariant> list;
-    foreach(const QString& key, _generalCities.keys()){
+    foreach(const QString& key, _generalCities.keys())
+    {
         QVariant lat  = _generalCities[key].latitude;
         QVariant lon  = _generalCities[key].longitude;
         QVariant code = _generalCities[key].weatherCode;
@@ -97,16 +85,12 @@ void CitychoiceManager::initMapItems()
         tempList.append(code);
         list.append(tempList);
     }
-
     emit setMapItems(list);
 }
 
 
 QPair<QString, CityCoords> CitychoiceManager::selectedCity()
 {
-    qDebug() << _selectedCity.first;
-    qDebug() << _selectedCity.second.latitude;
-    qDebug() << _selectedCity.second.longitude;
     return _selectedCity;
 }
 
@@ -126,51 +110,13 @@ Q_INVOKABLE void CitychoiceManager::onCityChosen(QString city)
             this->_selectedCity.second.latitude = lat;
             this->_selectedCity.second.longitude = lon;
         }
-        /*else
-        {
-            QString geostring = cityData.geostring;
-            QStringList fields = geostring.split(",");
-
-            QGeoServiceProvider qGeoService("osm");
-            QGeoCodingManager *pQGeoCoder = qGeoService.geocodingManager();
-            QGeoAddress qGeoAddr;
-
-            qGeoAddr.setCountry(fields[0]);
-            qGeoAddr.setPostalCode(fields[1]);
-            qGeoAddr.setCity(fields[2]);
-            qGeoAddr.setStreet(fields[3]);
-
-            QGeoCodeReply *pQGeoCode = pQGeoCoder->geocode(qGeoAddr);
-            if (!pQGeoCode) {
-                std::cerr << "GeoCoding totally failed!" << std::endl;
-            }
-
-            QEventLoop event;
-            connect(pQGeoCode,SIGNAL(finished()), &event, SLOT(quit()));
-            event.exec();
-
-            QList<QGeoLocation> qGeoLocs = pQGeoCode->locations();
-            QGeoLocation qGeoLoc = qGeoLocs[0];
-            qGeoLoc.setAddress(qGeoAddr);
-            QGeoCoordinate qGeoCoord = qGeoLoc.coordinate();
-
-            lon = qGeoCoord.longitude();
-            lat = qGeoCoord.latitude();
-
-            _cities[_cityName].latitude = lat;
-            _cities[_cityName].longitude = lon;
-
-        }*/
-    //qDebug() << lat;
-    //qDebug() << lon;
-    emit sendPinPosition(lat, lon);
+        emit sendPinPosition(lat, lon);
     }
 }
 
 
 Q_INVOKABLE void CitychoiceManager::onCustomCoords(QString coords)
 {
-    qDebug() << coords;
     QStringList fields = coords.split(",");
     _selectedCity.second.latitude = fields[0].toDouble();
     _selectedCity.second.longitude = fields[1].toDouble();

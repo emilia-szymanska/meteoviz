@@ -1,16 +1,4 @@
 #include "app_manager.h"
-///////////////////////////
-#include <QtNetwork>
-#include <QMessageBox>
-#include <QGeoCodingManager>
-#include <QApplication>
-#include <QGeoAddress>
-#include <QGeoCoordinate>
-#include <QGeoLocation>
-#include <QGeoServiceProvider>
-#include <QtDebug>
-#include <iostream>
-///
 
 AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citychoiceMngr, WeatherManager *weatherMngr, QObject *parent) : QObject(parent)
 {
@@ -25,7 +13,6 @@ AppManager::AppManager(QQmlApplicationEngine *engine, CitychoiceManager *citycho
     this->initCitychoiceConnections(topQObjectWindow);
     this->_citychoiceMngr->initCitiesCombobox();
     this->_citychoiceMngr->initMapItems();
-
 }
 
 
@@ -49,9 +36,12 @@ void AppManager::changeWindow()
         _engine->load(QUrl(QStringLiteral("qrc:/weather.qml")));
         QObject *qObjectWindow = _engine->rootObjects().value(1);
         this->initWeatherConnections(qObjectWindow);
-        this->_weatherMngr->setCity(this->_citychoiceMngr->selectedCity());
+        this->_weatherMngr->sendCity(this->_citychoiceMngr->selectedCity());
+        ///////////////////////////////
         //this->_weatherMngr->callFourDayForecast();
         //this->_weatherMngr->callGraphForecast();
+        //this->_weatherMngr->sendFourDayForecast();
+        //////////////////////////////
         this->_weatherMngr->sendGraphForecast();
 
     }
@@ -83,24 +73,25 @@ void AppManager::initCitychoiceConnections(QObject *qObjectWindow)
 
 }
 
+
 void AppManager::initWeatherConnections(QObject *qObjectWindow)
 {
    this->_window = qobject_cast<QQuickWindow *>(qObjectWindow);
 
+   // QML to C++ slots
    QObject::connect(this->_window, SIGNAL(refresh()),
                              this->_weatherMngr, SLOT(refreshRequest()));
 
+   // C++ to QML slots
    QObject::connect(this->_weatherMngr, SIGNAL(setCityLabel(QVariant)),
                             this->_window, SLOT(setCityLabel(QVariant)));
+
+   QObject::connect(this->_weatherMngr, SIGNAL(setGraphForecast(QVariant,QVariant)),
+                           this->_window, SLOT(updateSeries(QVariant,QVariant)));
+
 
    QObject::connect(this->_weatherMngr, SIGNAL(setFourDayForecast(QVariant)),
                            this->_window, SLOT(setFourWeatherForecast(QVariant)));
 
-   QObject::connect(this->_weatherMngr, SIGNAL(setGraphTempForecast(QVariant)),
-                           this->_window, SLOT(updateTemperatureSeries(QVariant)));
-
-
-   QObject::connect(this->_weatherMngr, SIGNAL(setGraphForecast(QVariant,QVariant)),
-                           this->_window, SLOT(updateSeries(QVariant,QVariant)));
 
 }

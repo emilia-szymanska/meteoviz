@@ -3,173 +3,9 @@ import QtQml 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtPositioning 5.12
-//import QtQuick.Layouts 1.12
 import QtCharts 2.15
 
 ApplicationWindow {
-
-    signal refresh()
-
-    function setCityLabel(cityName)
-    {
-        textChosenCity.text = cityName
-    }
-
-    function datePlusX(value)
-    {
-        var currentDate = new Date();
-        currentDate.setDate(currentDate.getDate() + value);
-        return currentDate
-    }
-
-
-    function fullHourPlusX(value){
-        var date = new Date();
-        date.setHours(date.getHours() + value);
-        date.setMinutes(0, 0, 0)
-        return date
-    }
-
-    function setFourWeatherForecast(list){
-        //console.log(list)
-        var elements = [0.0, 0.0, 0.0, "", 0.0, 0.0, 0] // temp, press, windSpeed, windDir, precit, hum, code
-        var j = 0;
-
-        for(var i in list){
-            elements[i%7] = list[i]
-
-            if (i%7 == 6){
-                console.log(j)
-                console.log(elements)
-
-                if(j===0){
-                    textTemperature.text = elements[0] + "\xB0C";
-                    textPressure.text = elements[1] + "hPa";
-                    textWindVel.text = elements[2] + "m/s";
-                    textWindDirection.text = elements[3];
-                    textRain.text = elements[4] + "mm/h";
-                    textHumidity.text = elements[5] + "%";
-                    var path = returnSourcePath(elements[6]);
-                    imageState.source = path;
-                }
-                if(j===1){
-                    textTemperature1.text = elements[0] + "\xB0C";
-                    textPressure1.text = elements[1] + "hPa";
-                    textWindVel1.text = elements[2] + "m/s";
-                    textWindDirection1.text = elements[3];
-                    textRain1.text = elements[4] + "mm/h";
-                    textHumidity1.text = elements[5] + "%";
-                    var path1 = returnSourcePath(elements[6]);
-                    imageState1.source = path;
-                }
-                if(j===2){
-                    textTemperature2.text = elements[0] + "\xB0C";
-                    textPressure2.text = elements[1] + "hPa";
-                    textWindVel2.text = elements[2] + "m/s";
-                    textWindDirection2.text = elements[3];
-                    textRain2.text = elements[4] + "mm/h";
-                    textHumidity2.text = elements[5] + "%";
-                    var path2 = returnSourcePath(elements[6]);
-                    imageState2.source = path;
-                }
-                if(j===3){
-                    textTemperature3.text = elements[0] + "\xB0C";
-                    textPressure3.text = elements[1] + "hPa";
-                    textWindVel3.text = elements[2] + "m/s";
-                    textWindDirection3.text = elements[3];
-                    textRain3.text = elements[4] + "mm/h";
-                    textHumidity3.text = elements[5] + "%";
-                    var path3 = returnSourcePath(elements[6]);
-                    imageState3.source = path;
-                }
-
-                j++;
-               }
-            }
-        }
-
-    function returnSourcePath(code)
-    {
-        switch(code){
-            case 0: return  "img/sun.png";
-            case 1101: return "img/example.jpg";
-            default: return "img/firework_transparent.gif";
-        }
-    }
-
-    function updateTemperatureSeries(list){
-        var min = 100
-        var max = -100
-
-        for(let i = 0; i < list.length; i++)
-        {
-            if(min > list[i]) min = list[i]
-            if(max < list[i]) max = list[i]
-
-            temperatureSeries.insert(i, fullHourPlusX(i), list[i])
-        }
-        tempAxisY.min = min-1
-        tempAxisY.max = max+1
-    }
-
-    function updatePrecitipationSeries(list){
-        var min = 100
-        var max = -100
-
-        for(let i = 0; i < list.length; i++)
-        {
-            if(min > list[i]) min = list[i]
-            if(max < list[i]) max = list[i]
-
-            precitipationSeries.insert(i, fullHourPlusX(i), list[i])
-        }
-        tempAxisY.min = min-1
-        tempAxisY.max = max+1
-    }
-
-    function updateSeries(listTemp, listPrec){
-        var minTemp = 100
-        var maxTemp = -100
-
-        temperatureSeries.removePoints(0, listTemp.length)
-        for(let i = 0; i < listTemp.length; i++)
-        {
-            if(minTemp > listTemp[i]) minTemp = listTemp[i]
-            if(maxTemp < listTemp[i]) maxTemp = listTemp[i]
-
-            temperatureSeries.insert(i, fullHourPlusX(i), listTemp[i])
-        }
-        tempAxisY.min = minTemp-1
-        tempAxisY.max = maxTemp+1
-
-        /*precitipationSeries.removePoints(0, listPrec.length)
-        for(let j = 0; j < listPrec.length; j++)
-        {
-            if(maxPrec < listPrec[j]) maxPrec = listPrec[j]
-
-            precitipationSeries.insert(j, fullHourPlusX(j), listPrec[j])
-        }*/
-
-        barSetData.remove(0, listPrec.length)
-        barSetData.values = listPrec
-
-        //console.log(listTemp)
-        //console.log(listPrec);
-        //precitipationSeries.insert(0, "2014", [0.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0]);
-        //precitipationSeries.insert(1, "hmmm2", listPrec);
-
-        precAxisY.max = Math.max.apply(Math, listPrec)+3
-    }
-
-    function hourCategories(){
-        let list = [];
-        for(let i = 0; i < 8; i++){
-            list.push(Qt.formatDateTime(fullHourPlusX(i), "hh:00"))
-        }
-        console.log(list)
-        return list;
-    }
-
     id: weatherWindow
     objectName: "weatherWindow"
     width: 1200
@@ -178,6 +14,10 @@ ApplicationWindow {
     minimumHeight: 900
     visible: true
     title: qsTr("MeteoViz")
+
+    /////////////////////////////
+    ///// general layout ////////
+    /////////////////////////////
 
 
     Column{
@@ -191,6 +31,9 @@ ApplicationWindow {
             rightMargin: 20
             bottomMargin: 20
         }
+
+        //////////////////////////////////
+        /// city + date //////////////////
 
         Row {
             width: parent.width
@@ -228,8 +71,11 @@ ApplicationWindow {
                 anchors.leftMargin: parent.width * 0.4
             }
 
-
         }
+
+
+        ////////////////////////////////////////
+        //// state + weather data + 3 buttons///
 
         Row {
             width: parent.width
@@ -414,6 +260,10 @@ ApplicationWindow {
 
         }
 
+        ////////////////////////////////////////
+        /////// 2 charts - spline and bars /////
+
+
         Row{
             width: parent.width
             height: parent.height * 0.3
@@ -454,10 +304,6 @@ ApplicationWindow {
                     axisX: tempAxisXTime
                     axisY: tempAxisY
                     color: "red"
-                    //name: "SplineSeries"
-                    //XYPoint { x: 1; y: 0.0 }
-                    //XYPoint { x: 2; y: 3.2 }
-                    //XYPoint { x: 3; y: 2.4 }
                 }
             }
 
@@ -491,33 +337,26 @@ ApplicationWindow {
                     labelsFont.bold: true
                 }
 
-                /*AreaSeries {
-                    //id: precitipationSeries
-                    axisX: precAxisXTime
-                    axisY: precAxisY
-                    upperSeries: LineSeries {
-                        id: precitipationSeries}
-
-                    //axisX: BarCategoryAxis { categories: ["2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014"] }
-
-                }*/
                 BarCategoryAxis {
                     id: barCategories
-                    categories: hourCategories()/*["2007", "2008", "2009", "2010", "2011", "2012" ]*/ }
+                    categories: hourCategories()
+                }
 
                 BarSeries {
-                        id: precitipationSeries
-                        axisX: barCategories
-                        axisY: precAxisY
-                        barWidth: 1
-                        BarSet {
-                            //label: "Bob";
-                            id: barSetData
-                            values: [2, 2, 3, 4, 5, 6]
-                        }
+                    id: precitipationSeries
+                    axisX: barCategories
+                    axisY: precAxisY
+                    barWidth: 1
+                    BarSet {
+                        id: barSetData
+                        values: [2, 2, 3, 4, 5, 6]
                     }
+                }
             }
         }
+
+        ////////////////////////////////////////////
+        //// 3x (state image, weather data, date)///
 
         Row{
             width: parent.width
@@ -993,9 +832,125 @@ ApplicationWindow {
         }
     }
 
-    /*Loader{
-        id:ld;
-        anchors.fill: parent;
-    }*/
+
+    ////////////////
+    ///SIGNALS//////
+    //FUNCTIONS/////
+    ////////////////
+
+    signal refresh()
+
+    function setCityLabel(cityName){
+        textChosenCity.text = cityName
+    }
+
+
+    function datePlusX(value){
+        var currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + value);
+        return currentDate
+    }
+
+
+    function fullHourPlusX(value){
+        var date = new Date();
+        date.setHours(date.getHours() + value);
+        date.setMinutes(0, 0, 0)
+        return date
+    }
+
+
+    function setFourWeatherForecast(list){
+        var elements = [0.0, 0.0, 0.0, "", 0.0, 0.0, 0] // temp, press, windSpeed, windDir, precit, hum, code
+        var j = 0;
+
+        for(var i in list){
+            elements[i%7] = list[i]
+            if (i%7 == 6){
+                if(j===0){
+                    textTemperature.text = elements[0] + "\xB0C";
+                    textPressure.text = elements[1] + "hPa";
+                    textWindVel.text = elements[2] + "m/s";
+                    textWindDirection.text = elements[3];
+                    textRain.text = elements[4] + "mm/h";
+                    textHumidity.text = elements[5] + "%";
+                    var path = returnSourcePath(elements[6]);
+                    imageState.source = path;
+                }
+                if(j===1){
+                    textTemperature1.text = elements[0] + "\xB0C";
+                    textPressure1.text = elements[1] + "hPa";
+                    textWindVel1.text = elements[2] + "m/s";
+                    textWindDirection1.text = elements[3];
+                    textRain1.text = elements[4] + "mm/h";
+                    textHumidity1.text = elements[5] + "%";
+                    var path1 = returnSourcePath(elements[6]);
+                    imageState1.source = path;
+                }
+                if(j===2){
+                    textTemperature2.text = elements[0] + "\xB0C";
+                    textPressure2.text = elements[1] + "hPa";
+                    textWindVel2.text = elements[2] + "m/s";
+                    textWindDirection2.text = elements[3];
+                    textRain2.text = elements[4] + "mm/h";
+                    textHumidity2.text = elements[5] + "%";
+                    var path2 = returnSourcePath(elements[6]);
+                    imageState2.source = path;
+                }
+                if(j===3){
+                    textTemperature3.text = elements[0] + "\xB0C";
+                    textPressure3.text = elements[1] + "hPa";
+                    textWindVel3.text = elements[2] + "m/s";
+                    textWindDirection3.text = elements[3];
+                    textRain3.text = elements[4] + "mm/h";
+                    textHumidity3.text = elements[5] + "%";
+                    var path3 = returnSourcePath(elements[6]);
+                    imageState3.source = path;
+                }
+                j++;
+               }
+            }
+    }
+
+
+    function returnSourcePath(code){
+        switch(code){
+            case 0: return  "img/sun.png";
+            case 1101: return "img/example.jpg";
+            default: return "img/firework_transparent.gif";
+        }
+    }
+
+
+    function updateSeries(listTemp, listPrec){
+        var minTemp = 100
+        var maxTemp = -100
+
+        temperatureSeries.removePoints(0, listTemp.length)
+        for(let i = 0; i < listTemp.length; i++)
+        {
+            if(minTemp > listTemp[i]) minTemp = listTemp[i]
+            if(maxTemp < listTemp[i]) maxTemp = listTemp[i]
+
+            temperatureSeries.insert(i, fullHourPlusX(i), listTemp[i])
+        }
+        tempAxisY.min = minTemp-1
+        tempAxisY.max = maxTemp+1
+
+        barSetData.remove(0, listPrec.length)
+        barSetData.values = listPrec
+        precAxisY.max = Math.max.apply(Math, listPrec)+3
+    }
+
+
+    function hourCategories(){
+        let list = [];
+        for(let i = 0; i < 8; i++){
+            list.push(Qt.formatDateTime(fullHourPlusX(i), "hh:00"))
+        }
+        return list;
+    }
+
 }
+
 

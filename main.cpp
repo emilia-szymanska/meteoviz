@@ -13,11 +13,12 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QApplication app(argc, argv);
-
-    //QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
-    CitychoiceManager citychoiceManager;
-    WeatherManager weatherManager;
+    UrlConnection urlCon("https://data.climacell.co/",
+                         "D:/qt_projects/meteoviz/apikey.txt");
+    CitychoiceManager citychoiceManager("D:/qt_projects/meteoviz/text_files/polish_cities.txt",
+                                        "D:/qt_projects/meteoviz/general_cities.txt", urlCon);
+    WeatherManager weatherManager(urlCon);
 
     AppManager appManager(&engine, &citychoiceManager, &weatherManager);
     engine.rootContext()->setContextProperty("appManager", &appManager);

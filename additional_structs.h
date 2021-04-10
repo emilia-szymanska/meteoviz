@@ -1,8 +1,6 @@
 #ifndef ADDITIONAL_STRUCTS_H
 #define ADDITIONAL_STRUCTS_H
-//#pragma once
 
-#include <iostream>
 #include <QString>
 #include <QVector>
 
@@ -13,12 +11,6 @@ struct CoordsWeatherData
     int weatherCode  = 0;
 };
 
-/*struct CityDataGeo
-{
-    double latitude  = 200.0;
-    double longitude = 200.0;
-    QString geostring = "";
-};*/
 
 struct CityCoords
 {
@@ -43,11 +35,5 @@ struct GraphData
 {
     QVector<double> data;
 };
-
-/*std::ostream& operator << (std::ostream &strm, const GeneralCityData &data)
-{
-  strm << data.latitude << " " << data.longitude << " " << data.weatherCode << "\n";
-  return strm;
-}*/
 
 #endif // ADDITIONAL_STRUCTS_H

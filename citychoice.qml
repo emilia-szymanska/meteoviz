@@ -1,7 +1,6 @@
 import QtQuick 2.12
 import QtQml 2.12
 import QtQuick.Controls 2.12
-import QtQuick.Layouts 1.12
 import QtQuick.Window 2.14
 import QtLocation 5.6
 import QtPositioning 5.6
@@ -9,55 +8,6 @@ import QtPositioning 5.6
 ApplicationWindow {
     id: citychoiceWindow
     objectName: "citychoiceWindow"
-
-    signal customCoords(string coords)
-    signal chosenCity(string city)
-    function setTextField(text){
-        textLabel.text = text
-    }
-
-    function addMarker(latitude, longitude){
-        //var Component = Qt.createComponent("marker.qml")
-        //var item = Component.createObject(citychoiceWindow, {
-        //           coordinate: QtPositioning.coordinate(latitude, longitude)})
-        //map.addMapItem(item)
-        marker2.coordinate = QtPositioning.coordinate(latitude, longitude)
-        marker2.visible = true
-    }
-
-    function setCitiesList(list){
-        comboBoxCities.model = list
-    }
-
-    function setMapItems(list){
-        //console.log(list)
-        var elements = [0.0, 0.0, 0] // lat, lon, code
-
-        for(var i in list){
-            elements[i%3] = list[i]
-
-            if (i%3 == 2){
-                var Component = Qt.createComponent("marker.qml")
-                var item = Component.createObject(citychoiceWindow, {
-                           coordinate: QtPositioning.coordinate(elements[0], elements[1])})
-
-                switch(elements[2])
-                {
-                    case 0: item.sourceItem.source = "img/firework_transparent.gif";
-                        break;
-                    case 1101: item.sourceItem.source = "img/firework.gif";
-                        break;
-                    default: item.sourceItem.source = "img/trial.gif";
-                        break;
-                }
-
-                map.addMapItem(item)
-               }
-            }
-        }
-
-
-
     width: 1200
     height: 900
     minimumWidth: 1200
@@ -65,11 +15,14 @@ ApplicationWindow {
     visible: true
     title: qsTr("MeteoViz")
 
-    background: BorderImage {
+    background: BorderImage
+            {
                 source: "img/example.jpg"
                 //border { left: 20; top: 20; right: 20; bottom: 20 }
             }
 
+    ///////////////////////////////
+    /////label+combobox+button////
 
     Row {
         width: parent.width / 2
@@ -80,7 +33,6 @@ ApplicationWindow {
             topMargin: 25
             leftMargin: 30
         }
-
 
         Text {
             id: textCityChoice
@@ -101,17 +53,13 @@ ApplicationWindow {
             editable: true
             onCurrentTextChanged:
             {
-                console.log(currentText)
                 chosenCity(currentText)
-                if(currentText == "Custom" && marker2.visible == false){
+                if(currentText == "Custom" && mapMarker.visible == false){
                     addMarker(51.9189046, 19.1343786)
                 }
-                if(currentText == "None" && marker2.visible == true)
-                {
-                    marker2.visible = false
+                if(currentText == "None" && mapMarker.visible == true){
+                    mapMarker.visible = false
                 }
-
-               // textLabel.text = currentText
             }
         }
 
@@ -124,40 +72,27 @@ ApplicationWindow {
         Button{
             id: buttonNext
             text: qsTr("NEXT")
-
             highlighted: comboBoxCities.currentText == "None" ? false : true
             enabled: highlighted == true ? true : false
             width: parent.width * 0.12
             height: parent.height
-            /*anchors {
-                leftMargin: parent.width * 0.1
-            }*/
             onClicked: {
                 if(comboBoxCities.currentText == "Custom"){
-                   var coordsFormat = marker2.coordinate.latitude + "," + marker2.coordinate.longitude
-                   // console.log(coordsFormat)
+                   var coordsFormat = mapMarker.coordinate.latitude + "," + mapMarker.coordinate.longitude
                    customCoords(coordsFormat)
                 }
-
                 appManager.changeWindow()
-                //console.log(marker2.coordinate)
-                //citychoiceWindow.close()
-                //ld.source="weather.qml"
             }
         }
 
-        Rectangle{
-            width: parent.width * 0.4
-            height: parent.height
-            color: "transparent"
-        }
-
-
-
     }
 
+    //////////////////////
+    ////EXIT BUTTON//////
+
+
     Button{
-        width: parent.width  * 0.15
+        width: parent.width  * 0.1
         height: parent.height * 0.05
         text: qsTr("CLOSE")
         anchors {
@@ -171,61 +106,102 @@ ApplicationWindow {
         onClicked: Qt.callLater(Qt.quit)
     }
 
+
+    /////////////////
+    ///MAP-RELATED///
+    /////////////////
+
     Plugin {
-            id: mapPlugin
-            name: "osm" //"esri", "mapboxgl"
+        id: mapPlugin
+        name: "osm" //"esri", "mapboxgl"
+    }
+
+    Map {
+        id: map
+        width: parent.width * 0.75
+        height: parent.height * 0.8
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: parent.height * 0.05
+        plugin: mapPlugin
+        center: QtPositioning.coordinate(51.9189046, 19.1343786) // Center Poland
+        zoomLevel: 6.6
+
+        Component.onCompleted: map.addMapItem(mapMarker) //addMarker(59.91, 10.75)
+
+        MouseArea {
+            anchors.fill: parent
+            onDoubleClicked:  {
+                var coordinate = map.toCoordinate(Qt.point(mouse.x,mouse.y))
+                mapMarker.coordinate = coordinate
+                mapMarker.visible = true
+                comboBoxCities.currentIndex = 1
+
+            }
         }
+    }
 
-        Map {
-            id: map
-            width: parent.width * 0.75
-            height: parent.height * 0.8
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: parent.height * 0.05
-            plugin: mapPlugin
-            center: QtPositioning.coordinate(51.9189046, 19.1343786) // Center Poland
-            zoomLevel: 6.6
+    MapQuickItem
+    {
+        id: mapMarker
+        objectName: "mapMarker"
+        anchorPoint.x: 20
+        anchorPoint.y: 20
+        coordinate: QtPositioning.coordinate(51.9189046, 19.1343786)
+        visible: false
 
-            Component.onCompleted: map.addMapItem(marker2) //addMarker(59.91, 10.75)
+        sourceItem:
+            Image{
+                id: icon
+                source: "img/example.jpg"
+                sourceSize.width: 40
+                sourceSize.height: 40
+            }
+    }
 
-            MouseArea {
-                    anchors.fill: parent
 
-                    onDoubleClicked:  {
-                        var coordinate = map.toCoordinate(Qt.point(mouse.x,mouse.y))
-                        console.log(coordinate)
-                        //console.log(coordinate.latitude)
-                        //console.log(coordinate.longitude)
+    ////////////////
+    ///SIGNALS//////
+    //FUNCTIONS/////
+    ////////////////
 
-                        marker2.coordinate = coordinate
-                        marker2.visible = true
-                        comboBoxCities.currentIndex = 1
+    signal customCoords(string coords)
+    signal chosenCity(string city)
 
-                    }
+
+    function addMarker(latitude, longitude){
+        mapMarker.coordinate = QtPositioning.coordinate(latitude, longitude)
+        mapMarker.visible = true
+    }
+
+
+    function setCitiesList(list){
+        comboBoxCities.model = list
+    }
+
+
+    function setMapItems(list){
+        var elements = [0.0, 0.0, 0] // lat, lon, code
+        for(var i in list){
+            elements[i%3] = list[i]
+
+            if (i%3 == 2){
+                var Component = Qt.createComponent("marker.qml")
+                var item = Component.createObject(citychoiceWindow, {
+                           coordinate: QtPositioning.coordinate(elements[0], elements[1])})
+
+                switch(elements[2]){
+                    case 0: item.sourceItem.source = "img/firework_transparent.gif";
+                            break;
+                    case 1101: item.sourceItem.source = "img/firework.gif";
+                            break;
+                    default: item.sourceItem.source = "img/trial.gif";
+                            break;
                 }
-
+                map.addMapItem(item)
+            }
         }
-
-        MapQuickItem
-        {
-            id: marker2
-            objectName: "marker2"
-            anchorPoint.x: 20 //marker2.width / 2
-            anchorPoint.y: 20 //marker2.height / 2
-            coordinate: QtPositioning.coordinate(51.9189046, 19.1343786)
-            visible: false
-
-            sourceItem:
-                Image{
-                    Image{
-                        id: icon
-                        source: "img/example.jpg"
-                        sourceSize.width: 40
-                        sourceSize.height: 40
-                    }
-                }
-        }
+    }
 }
 
 

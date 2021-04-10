@@ -1,14 +1,13 @@
 #include "weather_manager.h"
 
-WeatherManager::WeatherManager(QObject *parent) : QObject(parent)
+WeatherManager::WeatherManager(UrlConnection urlCon, QObject *parent) : QObject(parent)
 {
-    _urlCon = UrlConnection("https://data.climacell.co/");
-    //urlCon.callGeneralWeather(_generalCities);
+    _urlCon = urlCon;
 }
 
 
 
-void WeatherManager::setCity(QPair<QString, CityCoords> city)
+void WeatherManager::sendCity(QPair<QString, CityCoords> city)
 {
     _selectedCity = city;
     if(_selectedCity.first != "Custom")
@@ -26,32 +25,31 @@ void WeatherManager::setCity(QPair<QString, CityCoords> city)
         if (lon > 0.00) longitudePart = "E";
         else longitudePart = "W";
 
-        QString coordsString = QString::number(lat) + "\u00B0" + latitudePart + "  " + QString::number(lon) + "\u00B0" + longitudePart;
+        QString coordsString = QString::number(lat) + "\u00B0" + latitudePart + "  "
+                                    + QString::number(lon) + "\u00B0" + longitudePart;
         emit setCityLabel(coordsString);
     }
-    //_cityName = city.first;
-    //_cityData = city.second;
 }
 
 
 void WeatherManager::callFourDayForecast()
 {
-    //QMap<QString, DailyForecast> fourDayForecast;
     _urlCon.callDailyWeather(_selectedCity.second, _fourDayWeather);
-    sendFourDayForecast();
 }
+
 
 void WeatherManager::sendFourDayForecast()
 {
     QList<QVariant> list;
     foreach(const QString& key, _fourDayWeather.keys()){
-        QVariant temperature = _fourDayWeather[key].temperature;
-        QVariant pressure  = _fourDayWeather[key].pressure;
-        QVariant windSpeed = _fourDayWeather[key].windSpeed;
+        QVariant temperature   = _fourDayWeather[key].temperature;
+        QVariant pressure      = _fourDayWeather[key].pressure;
+        QVariant windSpeed     = _fourDayWeather[key].windSpeed;
         QVariant windDirection = _fourDayWeather[key].windDirection;
         QVariant precitipation = _fourDayWeather[key].precipitation;
-        QVariant humidity = _fourDayWeather[key].humidity;
-        QVariant weatherCode = _fourDayWeather[key].weatherCode;
+        QVariant humidity      = _fourDayWeather[key].humidity;
+        QVariant weatherCode   = _fourDayWeather[key].weatherCode;
+
         QList <QVariant> tempList;
         tempList.append(temperature);
         tempList.append(pressure);
@@ -77,15 +75,19 @@ void WeatherManager::sendGraphForecast()
 {
     QList<QVariant> listTemp;
     QList<QVariant> listPrec;
+
+    ///////////////
+    ///uncomment if needed
     /*QVector<double> temperature = _graphForecast["temperature"].data;
     QVector<double> precitipation = _graphForecast["precitipation"].data;
-
 
 
     for(int i = 0; i < temperature.size(); i++){
         listTemp.append(temperature[i]);
         listPrec.append(precitipation[i]);
     }*/
+    ////////////////////
+
 
     double f = (double)rand() / RAND_MAX;
 
@@ -97,15 +99,15 @@ void WeatherManager::sendGraphForecast()
     }
 
     emit setGraphForecast(listTemp, listPrec);
-    //qDebug() << list;
-    //emit setGraphTempForecast(listTemp);
-    //emit setGraphPrecForecast(listPrec);
 }
 
 
 void WeatherManager::refreshRequest()
 {
+    ////// uncomment when needed
     //callFourDayForecast();
     //callGraphForecast();
+    /////////////////////
+
     sendGraphForecast();
 }
