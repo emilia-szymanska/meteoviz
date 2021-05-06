@@ -2,8 +2,9 @@ import QtQuick 2.12
 import QtQml 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Window 2.14
-import QtLocation 5.6
-import QtPositioning 5.6
+import QtLocation 5.15
+import QtPositioning 5.15
+import QtQuick.Controls.Material 2.12
 
 ApplicationWindow {
     id: citychoiceWindow
@@ -15,11 +16,8 @@ ApplicationWindow {
     visible: true
     title: qsTr("MeteoViz")
 
-    background: BorderImage
-            {
-                source: "img/example.jpg"
-                //border { left: 20; top: 20; right: 20; bottom: 20 }
-            }
+    color: "#f8f5f0"
+    Material.accent: "#f37052"
 
     ///////////////////////////////
     /////label+combobox+button////
@@ -111,10 +109,6 @@ ApplicationWindow {
     ///MAP-RELATED///
     /////////////////
 
-    Plugin {
-        id: mapPlugin
-        name: "osm" //"esri", "mapboxgl"
-    }
 
     Map {
         id: map
@@ -123,7 +117,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.height * 0.05
-        plugin: mapPlugin
+        plugin: Plugin {name: "osm"} //"esri", "mapboxgl"
         center: QtPositioning.coordinate(51.9189046, 19.1343786) // Center Poland
         zoomLevel: 6.6
 
@@ -139,6 +133,7 @@ ApplicationWindow {
 
             }
         }
+
     }
 
     MapQuickItem
@@ -146,14 +141,14 @@ ApplicationWindow {
         id: mapMarker
         objectName: "mapMarker"
         anchorPoint.x: 20
-        anchorPoint.y: 20
+        anchorPoint.y: 40
         coordinate: QtPositioning.coordinate(51.9189046, 19.1343786)
         visible: false
 
         sourceItem:
             Image{
                 id: icon
-                source: "img/example.jpg"
+                source: "img/marker.png"
                 sourceSize.width: 40
                 sourceSize.height: 40
             }
@@ -186,16 +181,94 @@ ApplicationWindow {
             elements[i%3] = list[i]
 
             if (i%3 == 2){
-                var Component = Qt.createComponent("marker.qml")
+                var Component = Qt.createComponent("weather_icon.qml")
                 var item = Component.createObject(citychoiceWindow, {
                            coordinate: QtPositioning.coordinate(elements[0], elements[1])})
 
                 switch(elements[2]){
-                    case 0: item.sourceItem.source = "img/firework_transparent.gif";
+                    //unknown
+                    case 0: item.sourceItem.source = "img/questionmark.png";
                             break;
-                    case 1101: item.sourceItem.source = "img/firework.gif";
+                    //clear
+                    case 1000: item.sourceItem.source = "img/sunny.png";
                             break;
-                    default: item.sourceItem.source = "img/trial.gif";
+                    //cloudy
+                    case 1001: item.sourceItem.source = "img/cloudy.png";
+                            break;
+                    //mostly cloudy
+                    case 1100: item.sourceItem.source = "img/partly_sunny.png";
+                            break;
+                    //partly cloudy
+                    case 1101: item.sourceItem.source = "img/partly_sunny.png";
+                            break;
+                    //mostly cloudy
+                    case 1102: item.sourceItem.source = "img/cloudy.png";
+                            break;
+                    //fog
+                    case 2000: item.sourceItem.source = "img/foggy.png";
+                            break;
+                    //light fog
+                    case 2100: item.sourceItem.source = "img/foggy.png";
+                            break;
+                    //light wind
+                    case 3000: item.sourceItem.source = "img/windy.png";
+                            break;
+                    //wind
+                    case 3001: item.sourceItem.source = "img/windy.png";
+                            break;
+                    //strong wind
+                    case 3002: item.sourceItem.source = "img/windy.png";
+                            break;
+                    //drizzle
+                    case 4000: item.sourceItem.source = "img/rainy.png";
+                            break;
+                    //rain
+                    case 4001: item.sourceItem.source = "img/rainy.png";
+                            break;
+                    //light rain
+                    case 4200: item.sourceItem.source = "img/rainy.png";
+                            break;
+                    //heavy rain
+                    case 4201: item.sourceItem.source = "img/rainy.png";
+                            break;
+                    //snow
+                    case 5000: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //flurries
+                    case 5001: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //light snow
+                    case 5100: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //heavy snow
+                    case 5101: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //freezing drizzle
+                    case 6000: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //freezing rain
+                    case 6001: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //light freezing rain
+                    case 6200: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //heavy freezing rain
+                    case 6201: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //ice pallets
+                    case 7000: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //heavy ice pallets
+                    case 7101: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //light ice pallets
+                    case 7102: item.sourceItem.source = "img/snowy.png";
+                            break;
+                    //thunderstorm
+                    case 8000: item.sourceItem.source = "img/stormy.png";
+                            break;
+                    //default
+                    default: item.sourceItem.source = "img/questionmark.png";
                             break;
                 }
                 map.addMapItem(item)
