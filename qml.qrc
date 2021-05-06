@@ -2,13 +2,24 @@
     <qresource prefix="/">
         <file>citychoice.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>img/example.jpg</file>
-        <file>img/trial.gif</file>
         <file>weather.qml</file>
-        <file>marker.qml</file>
-        <file>img/firework.gif</file>
-        <file>img/firework_transparent.gif</file>
-        <file>img/sun.png</file>
         <file>text_files/polish_cities.txt</file>
+        <file>img/partly_sunny.png</file>
+        <file>weather_icon.qml</file>
+        <file>img/marker.png</file>
+        <file>img/cloudy.png</file>
+        <file>img/foggy.png</file>
+        <file>img/rainy.png</file>
+        <file>img/snowy.png</file>
+        <file>img/stormy.png</file>
+        <file>img/sunny.png</file>
+        <file>img/windy.png</file>
+        <file>img/pressure.png</file>
+        <file>img/rain.png</file>
+        <file>img/temperature.png</file>
+        <file>img/wind_direction.png</file>
+        <file>img/wind_speed.png</file>
+        <file>img/humidity.png</file>
+        <file>img/questionmark.png</file>
     </qresource>
 </RCC>

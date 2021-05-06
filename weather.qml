@@ -4,6 +4,7 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtPositioning 5.12
 import QtCharts 2.15
+import QtQuick.Controls.Material 2.12
 
 ApplicationWindow {
     id: weatherWindow
@@ -14,6 +15,10 @@ ApplicationWindow {
     minimumHeight: 900
     visible: true
     title: qsTr("MeteoViz")
+
+    color: "#f8f5f0"
+
+    Material.accent: "#f37052"
 
     /////////////////////////////
     ///// general layout ////////
@@ -41,7 +46,7 @@ ApplicationWindow {
 
             Text {
                 id: textChosenCity
-                text: qsTr("Warsaw")
+                text: qsTr("---")
                 width: parent.width * 0.25
                 height: parent.height
                 font.pointSize: 14
@@ -53,7 +58,7 @@ ApplicationWindow {
             }
 
             Rectangle{
-                width: parent.width * 0.05
+                width: parent.width * 0.1
                 height: parent.height
                 color: "transparent"
             }
@@ -81,15 +86,15 @@ ApplicationWindow {
             width: parent.width
             height: parent.height * 0.25
 
-            Image {
+            AnimatedImage {
                 id: imageState
-                width: parent.width * 0.25
+                width: parent.width * 0.22
                 height: parent.height
-                source: "img/sun.png"
+                source: "img/partly_sunny.png"
             }
 
             Rectangle{
-                width: parent.width * 0.05
+                width: parent.width * 0.13
                 height: parent.height
                 color: "transparent"
             }
@@ -106,14 +111,14 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.20
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/temperature.png"
                     }
 
                     Text {
                         id: textTemperature
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("22 C")
+                        text: qsTr("-\xB0C")
                         font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -123,14 +128,14 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.20
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/pressure.png"
                     }
 
                     Text {
                         id: textPressure
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("1020 hPa")
+                        text: qsTr("- hPa")
                         font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -145,14 +150,14 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.20
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/wind_speed.png"
                     }
 
                     Text {
                         id: textWindVel
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("4 m/s")
+                        text: qsTr("- m/s")
                         font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -162,14 +167,14 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.20
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/wind_direction.png"
                     }
 
                     Text {
                         id: textWindDirection
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("NE")
+                        text: qsTr("-")
                         font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -184,14 +189,14 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.20
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/rain.png"
                     }
 
                     Text {
                         id: textRain
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("10 mm")
+                        text: qsTr("- mm")
                         font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -201,14 +206,14 @@ ApplicationWindow {
                     Image{
                         width: parent.width * 0.20
                         height: parent.height
-                        source: "img/example.jpg"
+                        source: "img/humidity.png"
                     }
 
                     Text {
                         id: textHumidity
                         width: parent.width * 0.3
                         height: parent.height
-                        text: qsTr("50%")
+                        text: qsTr("-%")
                         font.pointSize: 14
                         fontSizeMode: Text.Fit
                         horizontalAlignment: Text.AlignHCenter
@@ -219,7 +224,7 @@ ApplicationWindow {
             }
 
             Rectangle{
-                width: parent.width * 0.2
+                width: parent.width * 0.15
                 height: parent.height
                 color: "transparent"
             }
@@ -277,9 +282,10 @@ ApplicationWindow {
                 width: parent.width * 0.5
                 height: parent.height
                 antialiasing: true
-                titleFont.family: "Helvetica"
+                titleFont.family: "Arial"
                 titleFont.bold: true
                 titleFont.capitalization: Font.AllUppercase
+
 
                 DateTimeAxis{
                     id: tempAxisXTime
@@ -293,7 +299,8 @@ ApplicationWindow {
 
                 ValueAxis {
                     id: tempAxisY
-                    min: 0.0
+                    tickInterval: 1
+                    min: 0
                     max: 4
                     labelFormat: "%d&deg;C"
                     labelsFont.bold: true
@@ -303,7 +310,8 @@ ApplicationWindow {
                     id: temperatureSeries
                     axisX: tempAxisXTime
                     axisY: tempAxisY
-                    color: "red"
+                    width: 4.0
+                    color: "#f37052"
                 }
             }
 
@@ -315,9 +323,10 @@ ApplicationWindow {
                 width: parent.width * 0.5
                 height: parent.height
                 antialiasing: true
-                titleFont.family: "Helvetica"
+                titleFont.family: "Arial"
                 titleFont.bold: true
                 titleFont.capitalization: Font.AllUppercase
+                titleColor: "black"
 
                 DateTimeAxis{
                     id: precAxisXTime
@@ -326,6 +335,7 @@ ApplicationWindow {
                     tickCount: 8
                     max: fullHourPlusX(7)
                     labelsFont.bold: true
+                    labelsColor: "white"
 
                 }
 
@@ -333,6 +343,7 @@ ApplicationWindow {
                     id: precAxisY
                     min: 0
                     max: 4
+                    tickInterval: 1
                     labelFormat: "%d mm"
                     labelsFont.bold: true
                 }
@@ -340,6 +351,7 @@ ApplicationWindow {
                 BarCategoryAxis {
                     id: barCategories
                     categories: hourCategories()
+                    labelsFont.bold: true
                 }
 
                 BarSeries {
@@ -349,7 +361,8 @@ ApplicationWindow {
                     barWidth: 1
                     BarSet {
                         id: barSetData
-                        values: [2, 2, 3, 4, 5, 6]
+                        color: "#bcc9e0"
+                        values: [0, 0, 0, 0, 0, 0]
                     }
                 }
             }
@@ -363,469 +376,526 @@ ApplicationWindow {
             height: parent.height * 0.4
 
             Rectangle{
-                width: parent.width * 0.05
+                width: parent.width * 0.02
                 height: parent.height
                 color: "transparent"
             }
 
-            Column{
-                width: parent.width * 0.27
+            GroupBox {
+                width: parent.width * 0.31
                 height: parent.height
 
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.33
-
-                    Image{
-                        id: imageState1
-                        width: parent.width * 0.4
+                background: Rectangle {
+                        width: parent.width
                         height: parent.height
-                        source: "img/sun.png"
+                        color: "#ece4d7"
+                        border.color: "transparent"
+                        radius: 2
                     }
 
-                    Text {
-                        id: textDate1
-                        width: parent.width * 0.6
-                        height: parent.height
-                        text: Qt.formatDateTime(datePlusX(1), "dd.MM.yyyy")
-                        font.pointSize: 12
-                        font.bold: true
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                Column{
+                    anchors.fill: parent
+
+
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.36
+
+                        Image{
+                            id: imageState1
+                            width: parent.width * 0.4
+                            height: parent.height
+                            source: "img/partly_sunny.png"
+                        }
+
+                        Text {
+                            id: textDate1
+                            width: parent.width * 0.6
+                            height: parent.height
+                            text: Qt.formatDateTime(datePlusX(1), "dd.MM.yyyy")
+                            font.pointSize: 12
+                            font.bold: true
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                    }
+
+                    Rectangle{
+                        width: parent.width
+                        height: parent.height * 0.04
+                        color: "transparent"
+                    }
+
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/temperature.png"
+                        }
+
+                        Text {
+                            id: textTemperature1
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- C")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/pressure.png"
+                        }
+
+                        Text {
+                            id: textPressure1
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("1015 hPa")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/wind_speed.png"
+                        }
+
+                        Text {
+                            id: textWindVel1
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- m/s")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/wind_direction.png"
+                        }
+
+                        Text {
+                            id: textWindDirection1
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("-")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/rain.png"
+                        }
+
+                        Text {
+                            id: textRain1
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- mm")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/humidity.png"
+                        }
+
+                        Text {
+                            id: textHumidity1
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("-%")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
 
                 }
+            }
 
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
+            Rectangle{
+                width: parent.width * 0.02
+                height: parent.height
+                color: "transparent"
+            }
 
-                    Image{
-                        width: parent.width * 0.20
+            GroupBox {
+                width: parent.width * 0.31
+                height: parent.height
+
+                background: Rectangle {
+                        width: parent.width
                         height: parent.height
-                        source: "img/example.jpg"
+                        color: "#ece4d7"
+                        border.color: "transparent"
+                        radius: 2
                     }
 
-                    Text {
-                        id: textTemperature1
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("22 C")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                Column{
+                    anchors.fill: parent
+
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.36
+
+                        Image{
+                            id: imageState2
+                            width: parent.width * 0.4
+                            height: parent.height
+                            source: "img/snowy.png"
+                        }
+
+                        Text {
+                            id: textDate2
+                            width: parent.width * 0.6
+                            height: parent.height
+                            text: Qt.formatDateTime(datePlusX(2), "dd.MM.yyyy")
+                            font.pointSize: 12
+                            font.bold: true
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
                     }
 
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
+                    Rectangle{
+                        width: parent.width
+                        height: parent.height * 0.04
+                        color: "transparent"
                     }
 
-                    Text {
-                        id: textPressure1
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("1020 hPa")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
 
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/temperature.png"
+                        }
 
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
+                        Text {
+                            id: textTemperature2
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- C")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 
-                    Text {
-                        id: textWindVel1
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("4 m/s")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/pressure.png"
+                        }
 
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textWindDirection1
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("NE")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
+                        Text {
+                            id: textPressure2
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- hPa")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
 
-                    Text {
-                        id: textRain1
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("10 mm")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/wind_speed.png"
+                        }
+
+                        Text {
+                            id: textWindVel2
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- m/s")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/wind_direction.png"
+                        }
+
+                        Text {
+                            id: textWindDirection2
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("-")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
 
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/rain.png"
+                        }
+
+                        Text {
+                            id: textRain2
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- mm")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/humidity.png"
+                        }
+
+                        Text {
+                            id: textHumidity2
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("-%")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
 
-                    Text {
-                        id: textHumidity1
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("50%")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
                 }
 
             }
 
             Rectangle{
-                width: parent.width * 0.05
+                width: parent.width * 0.02
                 height: parent.height
                 color: "transparent"
             }
 
-            Column{
-                width: parent.width * 0.27
+            GroupBox {
+                width: parent.width * 0.30
                 height: parent.height
 
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.33
-
-                    Image{
-                        id: imageState2
-                        width: parent.width * 0.4
+                background: Rectangle {
+                        width: parent.width
                         height: parent.height
-                        source: "img/sun.png"
+                        color: "#ece4d7"
+                        border.color: "transparent"
+                        radius: 2
                     }
 
-                    Text {
-                        id: textDate2
-                        width: parent.width * 0.6
-                        height: parent.height
-                        text: Qt.formatDateTime(datePlusX(2), "dd.MM.yyyy")
-                        font.pointSize: 12
-                        font.bold: true
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                Column{
+                    anchors.fill: parent
+
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.36
+
+                        Image{
+                            id: imageState3
+                            width: parent.width * 0.4
+                            height: parent.height
+                            source: "img/cloudy.png"
+                        }
+
+                        Text {
+                            id: textDate3
+                            width: parent.width * 0.6
+                            height: parent.height
+                            text: Qt.formatDateTime(datePlusX(3), "dd.MM.yyyy")
+                            font.pointSize: 12
+                            font.bold: true
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
                     }
 
-                }
-
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
+                    Rectangle{
+                        width: parent.width
+                        height: parent.height * 0.04
+                        color: "transparent"
                     }
 
-                    Text {
-                        id: textTemperature2
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("22 C")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/temperature.png"
+                        }
+
+                        Text {
+                            id: textTemperature3
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- C")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/pressure.png"
+                        }
+
+                        Text {
+                            id: textPressure3
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- hPa")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
 
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/wind_speed.png"
+                        }
+
+                        Text {
+                            id: textWindVel3
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- m/s")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/wind_direction.png"
+                        }
+
+                        Text {
+                            id: textWindDirection3
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("-")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
 
-                    Text {
-                        id: textPressure2
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("1020 hPa")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
+                    Row{
+                        width: parent.width
+                        height: parent.height * 0.2
 
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/rain.png"
+                        }
 
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
+                        Text {
+                            id: textRain3
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("- mm")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
 
-                    Text {
-                        id: textWindVel2
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("4 m/s")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
+                        Image{
+                            width: parent.width * 0.20
+                            height: parent.height
+                            source: "img/humidity.png"
+                        }
 
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textWindDirection2
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("NE")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
+                        Text {
+                            id: textHumidity3
+                            width: parent.width * 0.3
+                            height: parent.height
+                            text: qsTr("-%")
+                            font.pointSize: 10
+                            fontSizeMode: Text.Fit
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                     }
 
-                    Text {
-                        id: textRain2
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("10 mm")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textHumidity2
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("50%")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
                 }
 
             }
 
             Rectangle{
-                width: parent.width * 0.05
-                height: parent.height
-                color: "transparent"
-            }
-
-            Column{
-                width: parent.width * 0.26
-                height: parent.height
-
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.33
-
-                    Image{
-                        id: imageState3
-                        width: parent.width * 0.4
-                        height: parent.height
-                        source: "img/sun.png"
-                    }
-
-                    Text {
-                        id: textDate3
-                        width: parent.width * 0.6
-                        height: parent.height
-                        text: Qt.formatDateTime(datePlusX(3), "dd.MM.yyyy")
-                        font.pointSize: 12
-                        font.bold: true
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                }
-
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textTemperature3
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("22 C")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textPressure3
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("1020 hPa")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textWindVel3
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("4 m/s")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textWindDirection3
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("NE")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-
-                Row{
-                    width: parent.width
-                    height: parent.height * 0.22
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textRain3
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("10 mm")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-
-                    Image{
-                        width: parent.width * 0.20
-                        height: parent.height
-                        source: "img/example.jpg"
-                    }
-
-                    Text {
-                        id: textHumidity3
-                        width: parent.width * 0.3
-                        height: parent.height
-                        text: qsTr("50%")
-                        font.pointSize: 10
-                        fontSizeMode: Text.Fit
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                    }
-                }
-
-            }
-
-            Rectangle{
-                width: parent.width * 0.05
+                width: parent.width * 0.02
                 height: parent.height
                 color: "transparent"
             }
@@ -915,9 +985,62 @@ ApplicationWindow {
 
     function returnSourcePath(code){
         switch(code){
-            case 0: return  "img/sun.png";
-            case 1101: return "img/example.jpg";
-            default: return "img/firework_transparent.gif";
+            //unknown
+            case 0: return "img/questionmark.png";
+            //clear
+            case 1000: return "img/sunny.png";
+            //cloudy
+            case 1001: return "img/cloudy.png";
+            //mostly cloudy
+            case 1100: return "img/partly_sunny.png";
+            //partly cloudy
+            case 1101: return "img/partly_sunny.png";
+            //mostly cloudy
+            case 1102: return "img/cloudy.png";
+            //fog
+            case 2000: return "img/foggy.png";
+            //light fog
+            case 2100: return "img/foggy.png";
+            //light wind
+            case 3000: return "img/windy.png";
+            //wind
+            case 3001: return "img/windy.png";
+            //strong wind
+            case 3002: return "img/windy.png";
+            //drizzle
+            case 4000: return "img/rainy.png";
+            //rain
+            case 4001: return "img/rainy.png";
+            //light rain
+            case 4200: return "img/rainy.png";
+            //heavy rain
+            case 4201: return "img/rainy.png";
+            //snow
+            case 5000: return "img/snowy.png";
+            //flurries
+            case 5001: return "img/snowy.png";
+            //light snow
+            case 5100: return "img/snowy.png";
+            //heavy snow
+            case 5101: return "img/snowy.png";
+            //freezing drizzle
+            case 6000: return "img/snowy.png";
+            //freezing rain
+            case 6001: return "img/snowy.png";
+            //light freezing rain
+            case 6200: return "img/snowy.png";
+            //heavy freezing rain
+            case 6201: return "img/snowy.png";
+            //ice pallets
+            case 7000: return "img/snowy.png";
+            //heavy ice pallets
+            case 7101: return "img/snowy.png";
+            //light ice pallets
+            case 7102: return "img/snowy.png";
+            //thunderstorm
+            case 8000: return "img/stormy.png";
+            //default
+            default: return "img/questionmark.png";
         }
     }
 
@@ -925,7 +1048,6 @@ ApplicationWindow {
     function updateSeries(listTemp, listPrec){
         var minTemp = 100
         var maxTemp = -100
-
         temperatureSeries.removePoints(0, listTemp.length)
         for(let i = 0; i < listTemp.length; i++)
         {
@@ -934,12 +1056,15 @@ ApplicationWindow {
 
             temperatureSeries.insert(i, fullHourPlusX(i), listTemp[i])
         }
-        tempAxisY.min = minTemp-1
-        tempAxisY.max = maxTemp+1
+        tempAxisY.min = Math.floor(minTemp-1)
+        tempAxisY.max = Math.floor(maxTemp+1)
 
         barSetData.remove(0, listPrec.length)
         barSetData.values = listPrec
-        precAxisY.max = Math.max.apply(Math, listPrec)+3
+        precAxisY.max = Math.ceil(Math.max.apply(Math, listPrec)+3)
+
+        precAxisY.tickCount = precAxisY.max + 1
+        tempAxisY.tickCount = tempAxisY.max - tempAxisY.min + 1
     }
 
 
