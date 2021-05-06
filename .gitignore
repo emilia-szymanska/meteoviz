@@ -1,8 +1,7 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
-img
-apikey.txt
+text_files/apikey.txt
 
 *~
 *.autosave
